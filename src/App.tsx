@@ -6,21 +6,19 @@ import { Card } from "@blueprintjs/core";
 import "styles/App.css";
 function App() {
   return (
-    <div className="App">
-      <Card>
-        <div className="card-header">
-          <img className="inner" src="/logo-gt.png" alt="logo" width="50" />
-          <h2 className="inner bp3-heading" style={{ marginLeft: "3px" }}>
-            CHỨNG THỰC NGƯỜI DÙNG
-          </h2>
-        </div>
-        <hr />
-        <BrowserRouter>
-          <Route path="/login" exact component={Login} />
-          <Route path="/consent" exact component={Consent} />
-        </BrowserRouter>
-      </Card>
-    </div>
+    <Card className="App">
+      <div className="card-header">
+        <img className="inner" src="/logo-gt.png" alt="logo" width="50" />
+        <h2 className="inner bp3-heading" style={{ marginLeft: "3px" }}>
+          CHỨNG THỰC NGƯỜI DÙNG
+        </h2>
+      </div>
+      <hr />
+      <BrowserRouter>
+        <Route path="/login" exact component={Login} />
+        <Route path="/consent" exact component={Consent} />
+      </BrowserRouter>
+    </Card>
   );
 }
 
