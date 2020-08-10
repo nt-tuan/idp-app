@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, useLocation, Switch } from "react-router-dom";
 import { Login, Consent } from "pages/index";
 import { Card } from "@blueprintjs/core";
 import "styles/App.css";
+import { LoginCallback } from "pages/LoginCallback";
+import { Home } from "pages/Home";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { PrivateUser } from "pages/Private";
+import { OAuthWrapper } from "components/OAuthProvider";
+import { Logout, LogoutSuccess, LogoutFailed } from "pages/Logout";
+import { Roles } from "components/Roles";
+import { Users } from "pages/Users";
+import { AdminLayout } from "layout/admin";
+import { PublicLayout } from "layout/public";
+
 function App() {
   return (
-    <Card className="App">
-      <div className="card-header">
-        <img className="inner" src="/logo-gt.png" alt="logo" width="50" />
-        <h2 className="inner bp3-heading" style={{ marginLeft: "3px" }}>
-          CHỨNG THỰC NGƯỜI DÙNG
-        </h2>
-      </div>
-      <hr />
-      <BrowserRouter>
-        <Route path="/login" exact component={Login} />
-        <Route path="/consent" exact component={Consent} />
-      </BrowserRouter>
-    </Card>
+    <OAuthWrapper>
+      <Switch>
+        <Route path="/admin" component={AdminLayout} />
+        <Route path="/" component={PublicLayout} />
+      </Switch>
+    </OAuthWrapper>
   );
 }
 

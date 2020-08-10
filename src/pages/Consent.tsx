@@ -1,12 +1,17 @@
-import React from "react";
-import { Button, InputGroup } from "@blueprintjs/core";
-
+import React, { useEffect } from "react";
+import { Button, InputGroup, Spinner } from "@blueprintjs/core";
+import { useLocation } from "react-router-dom";
+import { idp } from "resources";
+const queryString = require("query-string");
 export const Consent = () => {
-  return (
-    <div>
-      <h3 className="bp3-heading">Chấp thuận</h3>
-
-      <Button>Xác nhận</Button>
-    </div>
-  );
+  const location = useLocation();
+  useEffect(() => {
+    const query = queryString.parse(location.search);
+    const challenge = query.consent_challenge;
+    idp
+      .acceptConsent(challenge)
+      .then((res) => (window.location.href = res.redirect_to))
+      .catch(() => (window.location.href = "/"));
+  }, []);
+  return <Spinner />;
 };
