@@ -1,4 +1,9 @@
 import Cookies from "universal-cookie";
+import { constants } from "./constants";
+import { auth } from "resources";
+import { StoredToken } from "./authToken";
+import ClientOAuth2 from "client-oauth2";
+import { authInfo } from "./auth";
 export interface RequestError {
   message: string;
 }
@@ -9,12 +14,14 @@ const err = (message: string) => {
 const ErrEmptyRespose = err("empty-response");
 
 const request = async <T>(url: string, method: string, body?: string) => {
-  const cookies = new Cookies();
-  const id_token = cookies.get("id_token");
-  const headers = {
+  var headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${id_token}`,
   };
+  const token = authInfo.token;
+  if (token !== undefined) {
+    const signed = token.sign({ url, headers, method });
+    var headers = signed.headers;
+  }
   const response = await fetch(url, { headers, method, body });
   const text = await response.text();
   if (response.ok) {

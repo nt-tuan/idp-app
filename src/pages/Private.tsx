@@ -9,18 +9,6 @@ import { useCookies } from "react-cookie";
 
 export const PrivateUser = () => {
   const { user } = useContext(OAuthContext);
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "accessToken",
-    "id_token",
-  ]);
-  useEffect(() => {
-    const url = `${process.env.REACT_APP_API_URL}/api/Admin/authenticated`;
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${cookies.id_token}`,
-    };
-    fetch(url, { headers });
-  }, [user]);
   return (
     <PrivateRoute>
       <div>{user}</div>

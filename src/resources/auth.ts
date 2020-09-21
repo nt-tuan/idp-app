@@ -9,3 +9,15 @@ export const auth = new ClientOAuth2({
   redirectUri: `${process.env.REACT_APP_URL}/callback`,
   scopes: ["openid", "offline", "profile"],
 });
+
+class AuthInfo {
+  token?: ClientOAuth2.Token;
+  setToken(token: ClientOAuth2.Token) {
+    this.token = token;
+  }
+  clearToken() {
+    this.token = undefined;
+  }
+}
+
+export const authInfo = new AuthInfo();
