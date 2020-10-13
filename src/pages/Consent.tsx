@@ -1,5 +1,5 @@
+import { Spinner } from "components/Core";
 import React, { useEffect } from "react";
-import { Button, InputGroup, Spinner } from "@blueprintjs/core";
 import { useLocation } from "react-router-dom";
 import { idp } from "resources";
 const queryString = require("query-string");
@@ -12,6 +12,6 @@ export const Consent = () => {
       .acceptConsent(challenge)
       .then((res) => (window.location.href = res.redirect_to))
       .catch(() => (window.location.href = "/"));
-  }, []);
+  }, [location.search]);
   return <Spinner />;
 };

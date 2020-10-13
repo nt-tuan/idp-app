@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Button, InputGroup, FormGroup, Classes } from "@blueprintjs/core";
 import { idp } from "resources";
-import { RequestError } from "resources/api";
-import { AppToaster } from "./toaster";
-import { LogoutButton } from "components/LogoutButton";
-const queryString = require("query-string");
+import { RequestError } from "resources/apis/api";
+import { AppToaster } from "../components/Core/toaster";
+import queryString from "query-string";
+import cx from "classnames";
+import { Input, Spinner } from "components/Core";
+import {
+  ArrowRight,
+  DeleteIcon,
+  KeyIcon,
+  UserIcon,
+} from "components/Icon/Icons";
 export const Login = () => {
   const [login_challenge, setChallenge] = useState<string>();
-  const [username, setUsername] = useState<string>();
+  const [cred, setCred] = useState<{ username?: string; password: string }>({
+    password: "",
+  });
   const [lockUsername, setLockUsername] = useState<boolean>(true);
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setUsername(value);
+  const handleChange = (name: string, value: string) => {
+    setCred((cred) => ({ ...cred, [name]: value }));
   };
+  const handleLogout = () => {
+    window.location.href =
+      process.env.REACT_APP_AUTH_URL + "/oauth2/sessions/logout";
+  };
+
   const onSubmit = () => {
-    if (username === undefined) return;
+    if (cred.username === undefined) return;
     if (login_challenge === undefined) {
       window.location.href = "/";
       return;
     }
     idp
-      .login(username, login_challenge)
+      .login(cred.username, cred.password, login_challenge)
       .then((res) => {
         window.location.href = res.redirect_to;
       })
@@ -28,46 +40,79 @@ export const Login = () => {
         AppToaster.show({ message: err.message, intent: "danger" });
       });
   };
-  useEffect(() => {
+
+  const loadUser = () => {
     var query = queryString.parse(window.location.search);
-    const login_challenge = query.login_challenge;
-    if (login_challenge == undefined || login_challenge == "") {
+    const login_challenge: string | undefined = query.login_challenge as
+      | string
+      | undefined;
+    if (login_challenge == null || login_challenge === "") {
       window.location.href = process.env.REACT_APP_URL as string;
+      return;
     }
     setChallenge(login_challenge);
     idp
       .getLogin(login_challenge)
       .then((res) => {
-        setUsername(res.subject);
-        if (res.subject != null && res.subject != "") {
+        setCred((cred) => ({ ...cred, username: res.username }));
+        if (res.username != null && res.username !== "") {
           setLockUsername(true);
         } else {
           setLockUsername(false);
         }
       })
       .catch(() => (window.location.href = "/"));
+  };
+
+  useEffect(() => {
+    loadUser();
   }, []);
 
-  if (username === undefined)
-    return <div className={Classes.SKELETON} style={{ height: "200px" }}></div>;
+  if (cred.username === undefined) return <Spinner />;
 
   return (
-    <div>
-      <h3 className="bp3-heading">Đăng nhập</h3>
-      <FormGroup>
-        <input type="hidden" name="login_challenge" value={login_challenge} />
-        <InputGroup
-          readOnly={lockUsername}
-          placeholder="Mã nhân viên"
-          leftIcon="user"
-          required
-          name="username"
-          value={username}
-          onChange={onChange}
-        />
-        <Button onClick={onSubmit}>Đăng nhập</Button>
-        {lockUsername && <LogoutButton redirect={false} />}
-      </FormGroup>
+    <div className="text-gray-700">
+      <div className="flex flex-row items-center justify-center mb-16">
+        <img className="inner" src="logo.svg" alt="logo" width="32" />
+        <div className="pl-2 text-lg font-extrabold text-blue-500">LOGIN</div>
+      </div>
+      <input type="hidden" name="login_challenge" value={login_challenge} />
+      <div className="w-full mb-2">
+        <div className={cx("flex flex-row items-center")}>
+          <div className="flex-1">
+            <Input
+              placeholder="Tài khoản"
+              value={cred.username}
+              name="username"
+              onChange={handleChange}
+              label={<UserIcon className="pr-4" />}
+            />
+          </div>
+          {lockUsername && (
+            <button
+              className="font-bold hover:text-red-500"
+              onClick={handleLogout}
+            >
+              <DeleteIcon />
+            </button>
+          )}
+        </div>
+      </div>
+      <Input
+        placeholder="Mật khẩu"
+        value={cred.password}
+        name="password"
+        onChange={handleChange}
+        label={<KeyIcon className="pr-4" />}
+        type="password"
+      />
+      <div
+        onClick={onSubmit}
+        className="flex flex-row items-center justify-center w-full mt-8 cursor-pointer hover:text-blue-500"
+      >
+        <div className="pr-2 text-lg font-bold">Go</div>
+        <ArrowRight />
+      </div>
     </div>
   );
 };

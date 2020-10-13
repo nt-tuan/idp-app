@@ -1,0 +1,22 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+$pt-intent-primary: #4299e1;
+@import "~@blueprintjs/core/src/blueprint.scss";
+
+.App {
+  max-width: 500px;
+  height: 500px;
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}

@@ -1,4 +1,2 @@
-export { api } from "./api";
-export { auth } from "./auth";
-export { idp } from "./idp";
-export { role } from "./role";
+export { api } from "./apis/api";
+export { idp } from "./apis/idp";
