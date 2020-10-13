@@ -6,15 +6,20 @@ interface MenuItemProps {
   content: React.ReactNode;
   info?: React.ReactNode;
   rightContent?: React.ReactNode;
+  className?: string;
 }
 export const MenuItem = (props: MenuItemProps) => {
   return (
     <div
-      className={cx("px-1 py-1 rounded", {
-        shadow: props.selected,
-        "bg-blue-400": props.selected,
-        "text-blue-100": props.selected,
-      })}
+      className={cx(
+        "px-1 py-1 rounded",
+        {
+          shadow: props.selected,
+          "bg-blue-400": props.selected,
+          "text-blue-100": props.selected,
+        },
+        props.className
+      )}
       onClick={props.onClick}
     >
       <div className="flex flex-row">
@@ -28,7 +33,8 @@ export const MenuItem = (props: MenuItemProps) => {
 
 interface Props {
   children: React.ReactNode;
+  className?: string;
 }
-export const Menu = ({ children }: Props) => {
-  return <div className="flex flex-col">{children}</div>;
+export const Menu = ({ children, className }: Props) => {
+  return <div className={cx("flex", className)}>{children}</div>;
 };

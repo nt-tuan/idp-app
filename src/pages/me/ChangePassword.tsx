@@ -4,6 +4,7 @@ import { Button } from "components/Core";
 import React from "react";
 import { RequestError } from "resources/apis/api";
 import { meAPI } from "resources/apis/me";
+import { translateErrorMessage } from "resources/translation/errors";
 interface State {
   oldPassword: string;
   newPassword: string;
@@ -63,7 +64,12 @@ export const ChangePassword = () => {
         setMessage({ success: "Đổi mật khẩu thành công" });
         setFormData(emptyForm);
       })
-      .catch((err: RequestError) => setMessage({ errors: err.messages }));
+      .catch((err: RequestError) => {
+        if (err.messages == null) return;
+        setMessage({
+          errors: [translateErrorMessage(err.message)],
+        });
+      });
   };
   return (
     <div>

@@ -11,6 +11,11 @@ export const Home = () => {
   React.useEffect(() => {
     meAPI.get(oidcUser).then(setUser);
   }, [oidcUser]);
-  if (user == null) return <Spinner />;
+  if (user == null)
+    return (
+      <div className="flex justify-center">
+        <Spinner />
+      </div>
+    );
   return <UserViewer user={user} />;
 };

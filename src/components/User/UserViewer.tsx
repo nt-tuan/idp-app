@@ -32,12 +32,16 @@ interface Props {
 }
 export const UserViewer = ({ user, extras }: Props) => {
   return (
-    <>
-      <Header extras={extras}>
-        Thông tin <b>{user.username}</b>
-      </Header>
-      <Header>Vai trò trong hệ thống</Header>
-      <UserRolesEditor roles={user.roles} />
-    </>
+    <div className="flex flex-row">
+      <div className="w-2/3">
+        <Header extras={extras}>
+          Thông tin <b>{user.username}</b>
+        </Header>
+      </div>
+      <div className="w-1/3">
+        <Header>Phân quyền</Header>
+        <UserRolesEditor roles={user.roles} />
+      </div>
+    </div>
   );
 };

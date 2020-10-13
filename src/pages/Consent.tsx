@@ -13,5 +13,9 @@ export const Consent = () => {
       .then((res) => (window.location.href = res.redirect_to))
       .catch(() => (window.location.href = "/"));
   }, [location.search]);
-  return <Spinner />;
+  return (
+    <div className="flex justify-center">
+      <Spinner />
+    </div>
+  );
 };

@@ -5,8 +5,8 @@ interface Props {
 }
 export const Header = ({ extras, children }: Props) => {
   return (
-    <div className="flex flex-row mb-4">
-      <div className="flex-1 font-bold text-lg">{children}</div>
+    <div className="flex flex-row mb-2">
+      <div className="flex-1 text-lg font-bold">{children}</div>
       {extras && <div className="flex flex-row">{extras}</div>}
     </div>
   );

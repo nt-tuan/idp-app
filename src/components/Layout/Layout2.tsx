@@ -11,19 +11,19 @@ export const Layout2 = ({
   right?: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-row h-full w-full">
+    <div className="flex flex-col w-full h-full sm:flex-row">
       {left && (
-        <div className="w-64 pr-2">
-          <div className="px-4 rounded h-full">{left}</div>
+        <div className="w-full sm:w-64">
+          <div className="h-full px-4">{left}</div>
         </div>
       )}
       <div
         className={cx("flex-1", {
-          "pl-2": left,
-          "border-l-2 border-gray-300": left,
+          "pt-6 sm:pt-0": left,
+          "sm:border-l-2 sm:border-gray-300": left,
         })}
       >
-        <div className="px-4 rounded h-full">{main}</div>
+        <div className="h-full px-4">{main}</div>
       </div>
       {right && <div className="w-64 px-2">{right}</div>}
     </div>

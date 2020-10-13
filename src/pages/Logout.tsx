@@ -13,7 +13,11 @@ export const Logout = () => {
       .then((json) => (window.location.href = json.redirect_to))
       .catch(() => (window.location.href = "/logout/failed"));
   }, [location.search]);
-  return <Spinner />;
+  return (
+    <div className="flex justify-center">
+      <Spinner />
+    </div>
+  );
 };
 
 export const LogoutFailed = () => {

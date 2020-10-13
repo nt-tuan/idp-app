@@ -12,8 +12,9 @@ export const Me = () => {
       <HeaderPageLayout routes={[meRoutes.Home, adminRoutes.UsersRoute]}>
         <Layout2
           left={
-            <Menu>
+            <Menu className="flex-row sm:flex-col">
               <MenuItem
+                className="flex-1 text-center sm:flex-0 sm:text-left"
                 selected={
                   matchPath(location.pathname, meRoutes.Home.path)?.isExact
                 }
@@ -22,6 +23,7 @@ export const Me = () => {
                 }
               />
               <MenuItem
+                className="flex-1 text-center sm:flex-0 sm:text-left"
                 selected={
                   matchPath(location.pathname, meRoutes.ChangePassword.path)
                     ?.isExact
