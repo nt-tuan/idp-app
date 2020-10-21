@@ -1,36 +1,37 @@
 import { Menu, MenuItem } from "components/Core";
-import { HeaderPageLayout } from "components/Layout/HeaderPageLayout";
+import { PageLayout } from "components/Layout/PageLayout";
 import { Layout2 } from "components/Layout/Layout2";
-import { adminRoutes } from "pages/admin/routes";
 import React from "react";
 import { Link, matchPath, Route, Switch, useLocation } from "react-router-dom";
-import { meRoutes } from "./routes";
+import { routes } from "routes";
 export const Me = () => {
   const location = useLocation();
   return (
     <div className="text-gray-700">
-      <HeaderPageLayout routes={[meRoutes.Home, adminRoutes.UsersRoute]}>
+      <PageLayout routes={[routes.UsersRoute]}>
         <Layout2
           left={
-            <Menu className="flex-row sm:flex-col">
+            <Menu className="hidden sm:flex">
               <MenuItem
                 className="flex-1 text-center sm:flex-0 sm:text-left"
                 selected={
-                  matchPath(location.pathname, meRoutes.Home.path)?.isExact
+                  matchPath(location.pathname, routes.MyHomeRoute.path)?.isExact
                 }
                 content={
-                  <Link to={meRoutes.Home.getPath()}>{meRoutes.Home.name}</Link>
+                  <Link to={routes.MyHomeRoute.getPath(undefined)}>
+                    {routes.MyHomeRoute.name}
+                  </Link>
                 }
               />
               <MenuItem
                 className="flex-1 text-center sm:flex-0 sm:text-left"
                 selected={
-                  matchPath(location.pathname, meRoutes.ChangePassword.path)
+                  matchPath(location.pathname, routes.ChangePasswordRoute.path)
                     ?.isExact
                 }
                 content={
-                  <Link to={meRoutes.ChangePassword.getPath()}>
-                    {meRoutes.ChangePassword.name}
+                  <Link to={routes.ChangePasswordRoute.getPath(undefined)}>
+                    {routes.ChangePasswordRoute.name}
                   </Link>
                 }
               />
@@ -40,14 +41,17 @@ export const Me = () => {
             <Switch>
               <Route
                 exact
-                path={meRoutes.ChangePassword.path}
-                render={meRoutes.ChangePassword.render}
+                path={routes.ChangePasswordRoute.path}
+                render={routes.ChangePasswordRoute.render}
               />
-              <Route path={meRoutes.Home.path} render={meRoutes.Home.render} />
+              <Route
+                path={routes.MyHomeRoute.path}
+                render={routes.MyHomeRoute.render}
+              />
             </Switch>
           }
         />
-      </HeaderPageLayout>
+      </PageLayout>
     </div>
   );
 };

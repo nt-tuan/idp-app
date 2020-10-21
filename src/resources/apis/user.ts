@@ -34,6 +34,13 @@ const create = async (user: User, createdUser: CreatedUser) =>
     JSON.stringify(createdUser),
     user
   );
+const update = async (user: User, id: string, updatedUser: IUser) =>
+  await api.put<IUser>(
+    `${base}/api/admin/user/${id}`,
+    JSON.stringify(updatedUser),
+    user
+  );
+
 const grantRole = async (user: User, id: string, role: string) =>
   await api.put<void>(
     `${base}/api/admin/user/${id}/role/${role}`,
@@ -47,23 +54,31 @@ const revokeRole = async (user: User, id: string, role: string) =>
     undefined,
     user
   );
-const lock = async (user: User, id: string) =>
-  await api.post(`${base}/api/admin/user/${id}/lock`, undefined, user);
+const lock = async (user: User, id: string, lockEnd: Date) =>
+  await api.post(
+    `${base}/api/admin/user/${id}/lock`,
+    JSON.stringify({ lockEnd }),
+    user
+  );
 
 const unlock = async (user: User, id: string) =>
   await api.post(`${base}/api/admin/user/${id}/unlock`, undefined, user);
 
 const getRoles = async (user: User) => {
-  var roles = await api.get<RolesProps[]>(
-    `${process.env.REACT_APP_API_URL}/api/admin/roles`,
-    user
-  );
+  var roles = await api.get<RolesProps[]>(`${base}/api/admin/roles`, user);
   if (roles === undefined) return [] as RolesProps[];
   return roles;
 };
+const resetPassword = async (user: User, id: string) =>
+  await api.post<{ password: string }>(
+    `${base}/api/admin/user/${id}/reset`,
+    undefined,
+    user
+  );
 
 export const userAPI = {
   get,
+  update,
   list,
   grantRole,
   revokeRole,
@@ -71,4 +86,5 @@ export const userAPI = {
   unlock,
   create,
   getRoles,
+  resetPassword,
 };

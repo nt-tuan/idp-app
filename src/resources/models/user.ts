@@ -17,7 +17,10 @@ export interface IUser {
   id: string;
   username: string;
   email: string;
+  phone?: string;
+  image?: string;
   roles: string[];
+  fullname?: string;
   employee?: EmployeProps;
   lockoutEnable: boolean;
   lockoutEnd?: string;

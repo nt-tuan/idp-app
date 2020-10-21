@@ -1,72 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { RolesProps, UserRolesProps } from "resources/models/role";
-import { Classes, Checkbox } from "@blueprintjs/core";
-import { userAPI } from "resources/apis/user";
-import { useReactOidc } from "@axa-fr/react-oidc-context";
-
-const LoadingRoles = () => {
-  const loadingLine = () => (
-    <div>
-      <h3 className={Classes.SKELETON}>Loading</h3>
-      <p className={Classes.SKELETON}>Loading</p>
-    </div>
-  );
-  return (
-    <div>
-      {loadingLine()}
-      {loadingLine()}
-      {loadingLine()}
-    </div>
-  );
-};
+import { Checkbox } from "@blueprintjs/core";
 
 interface Props {
+  allRoles: RolesProps[];
   roles: string[];
   onGranted?: (role: string) => void;
   onRevoked?: (role: string) => void;
 }
 
-export const UserRolesEditor = ({ roles, onGranted, onRevoked }: Props) => {
-  const { oidcUser } = useReactOidc();
-  const [allRoles, setAllRoles] = React.useState<RolesProps[]>([]);
-  const [userRoles, setUserRoles] = useState<UserRolesProps[]>();
+export const UserRolesEditor = ({
+  roles,
+  allRoles,
+  onGranted,
+  onRevoked,
+}: Props) => {
   const readOnly = React.useMemo(() => onGranted == null || onRevoked == null, [
     onGranted,
     onRevoked,
   ]);
-  const handleCheckedChange = (change: UserRolesProps) => {
-    if (change.has) {
-      onRevoked && onRevoked(change.name);
-      return;
-    }
-    onGranted && onGranted(change.name);
-  };
-  useEffect(() => {
-    userAPI.getRoles(oidcUser).then(setAllRoles);
-  }, [oidcUser]);
-  useEffect(() => {
-    setUserRoles(
+  const handleCheckedChange = React.useCallback(
+    (change: UserRolesProps) => {
+      if (change.has) {
+        onRevoked && onRevoked(change.name);
+        return;
+      }
+      onGranted && onGranted(change.name);
+    },
+    [onRevoked, onGranted]
+  );
+  const userRoles: UserRolesProps[] = React.useMemo(
+    () =>
       allRoles.map((role) => {
         const filter = roles.filter((userRole) => userRole === role.name);
         const has = filter.length > 0;
         return { ...role, has };
-      })
-    );
-  }, [allRoles, roles]);
-  if (userRoles === undefined) return <LoadingRoles />;
+      }),
+    [roles, allRoles]
+  );
+  console.log(roles, userRoles);
   return (
-    <div>
-      {userRoles?.map((role, index) => (
-        <div key={index}>
-          <Checkbox
-            readOnly={readOnly}
-            checked={role.has}
-            label={role.name}
-            onClick={() => handleCheckedChange(role)}
-          />
-          <p className="bp3-text-muted">{role.description}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="flex flex-col divide-y">
+        {userRoles?.map((role, index) => (
+          <div key={index} className="py-1">
+            <Checkbox
+              className="mb-0"
+              readOnly={readOnly}
+              checked={role.has}
+              onClick={() => handleCheckedChange(role)}
+            >
+              <b>{role.name}</b>
+            </Checkbox>
+            <div className="pb-2">
+              <i>{role.description}</i>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };

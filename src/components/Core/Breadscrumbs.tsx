@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classnames";
 import { useLocation, matchPath, Link } from "react-router-dom";
-import { RouteProps } from "./PrivateRoute";
+import { PageRoute } from "./PrivateRoute";
 export interface BreadscrumbProps {
   href: string;
   text: string;
@@ -9,7 +9,7 @@ export interface BreadscrumbProps {
   isFirst?: boolean;
   isLast?: boolean;
 }
-export const newBreadscrumb = (route: RouteProps<any>, isExact?: boolean) => {
+export const newBreadscrumb = (route: PageRoute<any>, isExact?: boolean) => {
   return {
     href: route.path,
     text: route.name,
@@ -49,7 +49,7 @@ export const Breadscrumbs = ({
     </div>
   );
 };
-export const AutoBreadscrumbs = ({ routes }: { routes: RouteProps<any>[] }) => {
+export const AutoBreadscrumbs = ({ routes }: { routes: PageRoute<any>[] }) => {
   const [breadscrumbs, setBreadscrumbs] = React.useState<BreadscrumbProps[]>();
   const location = useLocation();
   React.useEffect(() => {

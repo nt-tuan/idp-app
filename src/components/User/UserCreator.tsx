@@ -1,14 +1,15 @@
 import React from "react";
-import { Button, Checkbox, FormGroup, InputGroup } from "@blueprintjs/core";
+import { Checkbox, FormGroup, Icon, InputGroup } from "@blueprintjs/core";
 import { CreatedUser, IUser } from "resources/models/user";
 import { UserRolesEditor } from "./UserRolesEditor";
 import { userAPI } from "resources/apis/user";
 import { toastError, Header } from "components/Core";
 import { DatePicker } from "@blueprintjs/datetime";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { adminRoutes } from "pages/admin/routes";
 import { useHistory } from "react-router-dom";
 import { UserLayoutContext } from "pages/admin/UserAdmin";
+import { routes } from "routes";
+import { OutlineButton } from "components/Core/Button";
 interface Props {
   onChange: (user: IUser) => void;
   onClose?: () => void;
@@ -18,10 +19,10 @@ export const UserCreatorConsumer = () => {
   const history = useHistory();
   const handleChange = (user: IUser) => {
     setUsers((users) => [...users, user]);
-    history.push(adminRoutes.User.View.getPath(user.id));
+    history.push(routes.UserViewRoute.getPath(user.id));
   };
   const handleClose = () => {
-    history.push(adminRoutes.UsersRoute.getPath());
+    history.push(routes.UsersRoute.getPath(undefined));
   };
   return (
     <UserCreator onChange={handleChange} onClose={handleClose}></UserCreator>
@@ -29,6 +30,7 @@ export const UserCreatorConsumer = () => {
 };
 
 export const UserCreator = ({ onChange, onClose }: Props) => {
+  const { roles } = React.useContext(UserLayoutContext);
   const { oidcUser } = useReactOidc();
   const [user, setUser] = React.useState<CreatedUser>({
     username: "",
@@ -58,12 +60,18 @@ export const UserCreator = ({ onChange, onClose }: Props) => {
   };
   const handleLockoutEndChange = (data: Date) => {};
   return (
-    <div className="h-full px-4 py-2 rounded shadow">
+    <div className="h-full px-4 py-2">
       <Header
         extras={
           <div>
-            <Button icon="saved" onClick={handleSave} />
-            {onClose && <Button icon="cross" onClick={onClose} />}
+            <OutlineButton onClick={handleSave}>
+              <Icon icon="floppy-disk" /> Lưu
+            </OutlineButton>
+            {onClose && (
+              <OutlineButton onClick={onClose}>
+                <Icon icon="cross" /> Đóng
+              </OutlineButton>
+            )}
           </div>
         }
       >
@@ -105,7 +113,9 @@ export const UserCreator = ({ onChange, onClose }: Props) => {
       {user.lockoutEnable && user.lockoutEnd && (
         <DatePicker onChange={handleLockoutEndChange} value={user.lockoutEnd} />
       )}
+      <Header className="mt-10">Vai trò</Header>
       <UserRolesEditor
+        allRoles={roles}
         roles={user.roles}
         onGranted={handleGrantRole}
         onRevoked={handleRevokeRole}

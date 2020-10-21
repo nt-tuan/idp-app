@@ -1,13 +1,12 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { isUserLocked, IUser } from "resources/models/user";
 import { userAPI } from "resources/apis/user";
-import { Classes, HTMLTable, Button, Icon } from "@blueprintjs/core";
-import { UserEditor } from "components/User/UserEditor";
-import { UserCreator } from "./UserCreator";
+import { Classes, HTMLTable, Icon } from "@blueprintjs/core";
 import { Header } from "components/Core";
 import { Link, useHistory } from "react-router-dom";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { adminRoutes } from "pages/admin/routes";
+import { routes } from "routes";
+import { OutlineButton } from "components/Core/Button";
 export const LoadingUser = () => {
   return (
     <div>
@@ -26,11 +25,14 @@ const UserListView = ({ users, selected, onSelectedChange }: Props) => {
   const history = useHistory();
   return (
     <div className="flex flex-row w-full h-full">
-      <div className="flex-1 px-2">
+      <div className="flex-1">
         <Header
           extras={
-            <Link to={adminRoutes.CreateUserRoute.getPath(undefined)}>
-              <Button icon="add" />
+            <Link to={routes.UserCreateRoute.path}>
+              <OutlineButton>
+                <Icon icon="plus" />
+                Thêm tài khoản
+              </OutlineButton>
             </Link>
           }
         >
@@ -49,7 +51,7 @@ const UserListView = ({ users, selected, onSelectedChange }: Props) => {
               <tr
                 key={user.id}
                 onClick={() =>
-                  history.push(adminRoutes.User.View.getPath(user.id))
+                  history.push(routes.UserViewRoute.getPath(user.id))
                 }
               >
                 <td>{user.username}</td>
@@ -62,16 +64,6 @@ const UserListView = ({ users, selected, onSelectedChange }: Props) => {
           </tbody>
         </HTMLTable>
       </div>
-      {selected && (
-        <div className="w-64 px-2">
-          {selected && selected.id !== "" && (
-            <UserEditor user={selected} onChange={onSelectedChange} />
-          )}
-          {selected && selected.id === "" && (
-            <UserCreator onChange={onSelectedChange} />
-          )}
-        </div>
-      )}
     </div>
   );
 };

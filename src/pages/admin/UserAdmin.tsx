@@ -5,58 +5,77 @@ import { Layout2 } from "components/Layout/Layout2";
 import React from "react";
 import { userAPI } from "resources/apis/user";
 import { IUser } from "resources/models/user";
-import { adminRoutes } from "./routes";
+import { routes } from "routes";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
+import { LayoutContext } from "components/Layout/PageLayout";
+import { User } from "oidc-client";
+import { RolesProps } from "resources/models/role";
+import { RequestError } from "resources/apis/api";
+import { ErrorMessage } from "components/Core/ErrorMessage";
 interface UserLayoutContextProps {
   users: IUser[];
+  roles: RolesProps[];
   user?: IUser;
-  onUserChange: (user: IUser) => void;
+  refreshUser: () => void;
+  onUserChange: React.Dispatch<React.SetStateAction<IUser | undefined>>;
   setUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
 }
 type TParams = { id: string };
 export const UserLayoutContext = React.createContext<UserLayoutContextProps>({
+  roles: [],
   users: [],
+  refreshUser: () => {},
   onUserChange: () => {},
   setUsers: () => [],
 });
+const initialLoad = async (oidcUser: User) => {
+  const users = await userAPI.list(oidcUser, 0, 100, "id", 1);
+  const roles = await userAPI.getRoles(oidcUser);
+  return { users, roles };
+};
 export const UserAdmin = (props: RouteComponentProps<TParams>) => {
-  React.useEffect(() => {
-    console.log("mount users wrapper");
-    return () => {
-      console.log("unmount users wrapper");
-    };
-  }, []);
-
   return <UserAdminWrapped {...props} />;
 };
+
 const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
   const [users, setUsers] = React.useState<IUser[]>([]);
   const [user, setUser] = React.useState<IUser>();
+  const [roles, setRoles] = React.useState<RolesProps[]>([]);
+  const [error, setError] = React.useState<RequestError>();
   const { oidcUser } = useReactOidc();
+  const { setBreadscrumbs } = React.useContext(LayoutContext);
   React.useEffect(() => {
-    console.log("mount users");
-    return () => {
-      console.log("unmount users");
-    };
-  }, []);
-  React.useEffect(() => {
-    userAPI.list(oidcUser, 0, 10, "id", 1).then((users) => {
+    if (oidcUser == null) return;
+    initialLoad(oidcUser).then(({ users, roles }) => {
       setUsers(users);
+      setRoles(roles);
     });
   }, [oidcUser]);
-  React.useEffect(() => {
-    if (match?.params?.id == null) return;
+  const refreshUser = React.useCallback(() => {
+    if (match?.params?.id == null || oidcUser == null) return;
     const id = match.params.id;
-    userAPI.get(oidcUser, id).then(setUser);
+    userAPI
+      .get(oidcUser, id)
+      .then((changed) => {
+        setUser(changed);
+        setUsers((users) =>
+          users.map((user) => (user.id === changed.id ? changed : user))
+        );
+      })
+      .catch(setError);
   }, [oidcUser, match]);
+  React.useEffect(() => {
+    console.log("refhresh");
+    refreshUser();
+  }, [refreshUser]);
   const breadscrumbs = React.useMemo(() => {
     const bs = [
-      newBreadscrumb(adminRoutes.UsersRoute),
+      newBreadscrumb(routes.UsersRoute),
       ...(user
         ? [
             {
               text: user.username,
-              href: adminRoutes.User.View.getPath(user.id),
+              href: routes.UserViewRoute.getPath(user.id),
               active: true,
             },
           ]
@@ -65,13 +84,25 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
 
     return bs;
   }, [user]);
-  const onUserChange = (user: IUser) => {
-    setUser(user);
-  };
+  React.useEffect(() => {
+    console.log("bs changed");
+    setBreadscrumbs(breadscrumbs);
+  }, [setBreadscrumbs, breadscrumbs]);
+  console.log("render admin", users, user, roles);
+  if (error != null) return <ErrorMessage {...error} />;
   return (
-    <UserLayoutContext.Provider value={{ users, user, setUsers, onUserChange }}>
+    <UserLayoutContext.Provider
+      value={{
+        users,
+        roles,
+        user,
+        refreshUser,
+        setUsers,
+        onUserChange: setUser,
+      }}
+    >
       <div className="flex flex-col h-full">
-        <div className="pl-4">
+        <div className="hidden sm:block pl-5 pb-2">
           <Breadscrumbs breadscrumbs={breadscrumbs} />
         </div>
         <div className="flex flex-1">
@@ -80,19 +111,14 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
             main={
               <Switch>
                 <Route
-                  path={adminRoutes.User.Edit.path}
+                  path={routes.UserViewRoute.path}
                   exact
-                  render={adminRoutes.User.Edit.render}
+                  render={routes.UserViewRoute.render}
                 />
                 <Route
-                  path={adminRoutes.User.View.path}
+                  path={routes.UserCreateRoute.path}
                   exact
-                  render={adminRoutes.User.View.render}
-                />
-                <Route
-                  path={adminRoutes.CreateUserRoute.path}
-                  exact
-                  component={adminRoutes.CreateUserRoute.render}
+                  component={routes.UserCreateRoute.render}
                 />
               </Switch>
             }
