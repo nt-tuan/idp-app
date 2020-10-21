@@ -3,11 +3,11 @@ import { Redirect, RouteComponentProps } from "react-router-dom";
 import { OidcSecure, useReactOidc } from "@axa-fr/react-oidc-context";
 import { User } from "oidc-client";
 
-export type RouteProps<T> = {
+export type PageRoute<T> = {
   name: string;
   path: string;
   requireRoles?: string[];
-  children?: RouteProps<any>[];
+  children?: PageRoute<any>[];
   getPath: (parameters: T) => string;
   render?: (props: RouteComponentProps<any>) => JSX.Element;
   component:
@@ -60,7 +60,7 @@ export function newProtectedRoute<T>({
   requireRoles,
   getPath,
   component,
-}: RouteProps<any>): RouteProps<T> {
+}: PageRoute<any>): PageRoute<T> {
   return {
     name,
     path,

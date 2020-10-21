@@ -12,3 +12,6 @@ export const toastError = (err: RequestError) => {
   const intent = "danger";
   AppToaster.show({ message, intent });
 };
+export const toastSuccess = (message: React.ReactNode, timeout?: number) => {
+  AppToaster.show({ message, intent: "success", timeout });
+};

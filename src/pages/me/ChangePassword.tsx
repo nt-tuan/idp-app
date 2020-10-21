@@ -1,6 +1,8 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { FormGroup, InputGroup } from "@blueprintjs/core";
 import { Button } from "components/Core";
+import { ErrorMessage } from "components/Core/ErrorMessage";
+import { toastSuccess } from "components/Core/toaster";
 import React from "react";
 import { RequestError } from "resources/apis/api";
 import { meAPI } from "resources/apis/me";
@@ -24,10 +26,7 @@ export const ChangePassword = () => {
     newPassword?: string;
     confirmPassword?: string;
   }>();
-  const [message, setMessage] = React.useState<{
-    errors?: string[];
-    success?: string;
-  }>({});
+  const [error, setError] = React.useState<RequestError>();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFormError(undefined);
@@ -61,32 +60,21 @@ export const ChangePassword = () => {
     meAPI
       .changePassword(oidcUser, formData)
       .then(() => {
-        setMessage({ success: "Đổi mật khẩu thành công" });
         setFormData(emptyForm);
       })
+      .then(() => toastSuccess("Đổi mật khẩu thành công"))
       .catch((err: RequestError) => {
         if (err.messages == null) return;
-        setMessage({
-          errors: [translateErrorMessage(err.message)],
+        const message = translateErrorMessage(err.message);
+        setError({
+          message,
+          messages: [message],
         });
       });
   };
   return (
     <div>
-      {message.errors &&
-        message.errors.map((err, i) => (
-          <div
-            className="px-2 py-1 mb-1 text-red-100 bg-red-500 rounded"
-            key={i}
-          >
-            {err}
-          </div>
-        ))}
-      {message.success && (
-        <div className="px-2 py-1 mb-1 text-green-100 bg-green-500 rounded">
-          {message.success}
-        </div>
-      )}
+      {error && <ErrorMessage {...error} />}
       <div className="font-bold">
         Bạn đang sử dụng tài khoản <b>{oidcUser.profile.unique_name}</b>
       </div>

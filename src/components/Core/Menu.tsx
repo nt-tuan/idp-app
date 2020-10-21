@@ -12,7 +12,7 @@ export const MenuItem = (props: MenuItemProps) => {
   return (
     <div
       className={cx(
-        "px-1 py-1 rounded",
+        "py-2 cursor-pointer",
         {
           shadow: props.selected,
           "bg-blue-400": props.selected,
@@ -22,8 +22,8 @@ export const MenuItem = (props: MenuItemProps) => {
       )}
       onClick={props.onClick}
     >
-      <div className="flex flex-row">
-        <div className="flex-1 font-bold">{props.content}</div>
+      <div className="flex flex-row px-2">
+        <div className="flex-1">{props.content}</div>
         {props.rightContent}
       </div>
       <div>{props.info}</div>
@@ -36,5 +36,5 @@ interface Props {
   className?: string;
 }
 export const Menu = ({ children, className }: Props) => {
-  return <div className={cx("flex", className)}>{children}</div>;
+  return <div className={cx("flex flex-col", className)}>{children}</div>;
 };

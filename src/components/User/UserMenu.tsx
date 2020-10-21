@@ -1,10 +1,9 @@
 import React from "react";
 import { isUserLocked, IUser } from "resources/models/user";
-import { Icon } from "@blueprintjs/core";
+import { Icon, InputGroup } from "@blueprintjs/core";
 import cx from "classnames";
 import { useHistory } from "react-router-dom";
-import { adminRoutes } from "pages/admin/routes";
-import { Input } from "components/Core";
+import { routes } from "routes";
 interface Props {
   selected?: IUser;
   users: IUser[];
@@ -19,13 +18,15 @@ export const UserMenu = ({ selected, users }: Props) => {
       (user) => user.username.match(query) || user.email.match(query)
     );
   }, [users, query]);
-  const handleQueryChange = (name: string, value: string) => {
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     setQuery(value);
   };
 
   return (
-    <div className="flex flex-col">
-      <Input
+    <div className="hidden sm:flex sm:flex-col">
+      <InputGroup
+        type="search"
         className="mb-4"
         value={query}
         onChange={handleQueryChange}
@@ -39,7 +40,7 @@ export const UserMenu = ({ selected, users }: Props) => {
             "bg-blue-400": selected && selected.id === user.id,
             "text-blue-100": selected && selected.id === user.id,
           })}
-          onClick={() => history.push(adminRoutes.User.View.getPath(user.id))}
+          onClick={() => history.push(routes.UserViewRoute.getPath(user.id))}
         >
           <div className="flex flex-row">
             <div className="flex-1 font-bold">{user.username}</div>

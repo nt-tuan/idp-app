@@ -10,6 +10,10 @@ export const Layout2 = ({
   main: React.ReactNode;
   right?: React.ReactNode;
 }) => {
+  React.useEffect(() => {
+    console.log("layout mounted");
+    return () => console.log("layout unmounted");
+  }, []);
   return (
     <div className="flex flex-col w-full h-full sm:flex-row">
       {left && (
@@ -19,8 +23,7 @@ export const Layout2 = ({
       )}
       <div
         className={cx("flex-1", {
-          "pt-6 sm:pt-0": left,
-          "sm:border-l-2 sm:border-gray-300": left,
+          "sm:border-l sm:border-gray-300": left,
         })}
       >
         <div className="h-full px-4">{main}</div>
