@@ -5,8 +5,6 @@ import { useReactOidc } from "@axa-fr/react-oidc-context";
 export const LoginButton = () => {
   const { login, oidcUser, logout } = useReactOidc();
   const handleLogin = () => {
-    if (login == null) console.log("null login function");
-    console.log(login);
     login();
   };
   return oidcUser ? (

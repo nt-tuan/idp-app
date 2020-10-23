@@ -73,7 +73,6 @@ export const UserList = () => {
   const [selected, setSelected] = useState<IUser>();
   const ctx = useReactOidc();
   const { oidcUser } = ctx;
-  console.log(ctx);
   const reload = useCallback(() => {
     userAPI.list(oidcUser, 0, 10, "id", 1).then((users) => {
       setUsers(users);

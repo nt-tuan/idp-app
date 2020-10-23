@@ -38,7 +38,6 @@ export const UserRolesEditor = ({
       }),
     [roles, allRoles]
   );
-  console.log(roles, userRoles);
   return (
     <>
       <div className="flex flex-col divide-y">

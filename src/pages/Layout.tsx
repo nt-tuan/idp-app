@@ -14,7 +14,7 @@ export const PublicLayout = () => {
       >
         <div className="flex flex-col items-center w-full h-full px-4">
           <div className="flex flex-row items-center justify-center py-2">
-            <img className="inner" src="logo.svg" alt="logo" width="48" />
+            <img className="inner" src="/logo.svg" alt="logo" width="48" />
             <div className="pl-2 text-4xl font-extrabold text-blue-500">
               MY SHELL
             </div>

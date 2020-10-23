@@ -158,14 +158,18 @@ interface Props {
 const Field = ({ label, value }: { label: string; value?: string }) => (
   <div className="flex flex-row items-baseline">
     <div className="w-32">{label}</div>
-    <div className="text-lg">{value}</div>
+    {value ? (
+      <div className="font-bold">{value}</div>
+    ) : (
+      <i className="text-gray-500">(Không có)</i>
+    )}
   </div>
 );
 const GeneralInfo = ({ user }: Props) => {
   return (
     <div className="flex flex-row">
       <Avatar name={user.username} src={user.image} round />
-      <div className="pl-4 flex flex-col justify-center">
+      <div className="flex flex-col justify-center pl-4">
         <div className="font-bold">ID {user.id}</div>
         <Field label="Tài khoản" value={user.username} />
         <Field label="Họ tên" value={user.fullname} />
@@ -204,7 +208,7 @@ export const UserViewer = (props: Props) => {
         </Tabs>
       </div>
       <div className="hidden sm:flex sm:flex-row sm:flex-wrap sm:divide-x">
-        <div className="w-full xl:w-1/2 xl:pr-2 pb-2 flex flex-col">
+        <div className="flex flex-col w-full pb-2 xl:w-1/2 xl:pr-2">
           <Header extras={props.extras}>Thông tin chung</Header>
           <div className="flex-1">
             {props.onChange && props.editing ? (
@@ -218,7 +222,7 @@ export const UserViewer = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="w-full xl:w-1/2 xl:pl-2 pb-2 flex flex-col">
+        <div className="flex flex-col w-full pb-2 xl:w-1/2 xl:pl-2">
           <Header>Vai trò</Header>
           <div className="flex-1 overflow-y-auto">
             <UserRolesEditor
