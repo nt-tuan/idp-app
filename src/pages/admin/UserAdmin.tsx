@@ -65,7 +65,6 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
       .catch(setError);
   }, [oidcUser, match]);
   React.useEffect(() => {
-    console.log("refhresh");
     refreshUser();
   }, [refreshUser]);
   const breadscrumbs = React.useMemo(() => {
@@ -85,10 +84,8 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
     return bs;
   }, [user]);
   React.useEffect(() => {
-    console.log("bs changed");
     setBreadscrumbs(breadscrumbs);
   }, [setBreadscrumbs, breadscrumbs]);
-  console.log("render admin", users, user, roles);
   if (error != null) return <ErrorMessage {...error} />;
   return (
     <UserLayoutContext.Provider
@@ -102,7 +99,7 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
       }}
     >
       <div className="flex flex-col h-full">
-        <div className="hidden sm:block pl-5 pb-2">
+        <div className="hidden pb-2 pl-5 sm:block">
           <Breadscrumbs breadscrumbs={breadscrumbs} />
         </div>
         <div className="flex flex-1">

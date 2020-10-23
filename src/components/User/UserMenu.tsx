@@ -35,7 +35,7 @@ export const UserMenu = ({ selected, users }: Props) => {
       {filterUsers.map((user) => (
         <div
           key={user.username}
-          className={cx("px-1 py-1 rounded", {
+          className={cx("px-1 py-1 rounded cursor-pointer", {
             shadow: selected && selected.id === user.id,
             "bg-blue-400": selected && selected.id === user.id,
             "text-blue-100": selected && selected.id === user.id,

@@ -10,10 +10,6 @@ export const Layout2 = ({
   main: React.ReactNode;
   right?: React.ReactNode;
 }) => {
-  React.useEffect(() => {
-    console.log("layout mounted");
-    return () => console.log("layout unmounted");
-  }, []);
   return (
     <div className="flex flex-col w-full h-full sm:flex-row">
       {left && (

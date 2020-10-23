@@ -1,10 +1,9 @@
 import React from "react";
-import cx from "classnames";
 import { useLocation, matchPath, Link } from "react-router-dom";
 import { PageRoute } from "./PrivateRoute";
 export interface BreadscrumbProps {
   href: string;
-  text: string;
+  text: React.ReactNode;
   active?: boolean;
   isFirst?: boolean;
   isLast?: boolean;
@@ -20,15 +19,7 @@ const Breadscrumb = ({ href, text, active, isFirst }: BreadscrumbProps) => {
   return (
     <>
       {!isFirst && <div className="mx-1">&raquo;</div>}
-      <Link to={href}>
-        <div
-          className={cx({
-            "font-bold": active,
-          })}
-        >
-          {text}
-        </div>
-      </Link>
+      <Link to={href}>{text}</Link>
     </>
   );
 };
@@ -38,7 +29,7 @@ export const Breadscrumbs = ({
   breadscrumbs: BreadscrumbProps[];
 }) => {
   return (
-    <div className="flex flex-row text-gray-500">
+    <div className="flex flex-row items-end text-gray-500">
       {breadscrumbs.map((breadscrumb, index) => (
         <Breadscrumb
           key={breadscrumb.href}
@@ -84,7 +75,6 @@ export const AutoBreadscrumbs = ({ routes }: { routes: PageRoute<any>[] }) => {
       },
       []
     );
-    console.log("breadscrumbs", breadScrumbs);
     setBreadscrumbs(breadScrumbs);
   }, [location, routes]);
   if (breadscrumbs == null) return <></>;
