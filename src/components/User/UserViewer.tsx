@@ -207,7 +207,7 @@ export const UserViewer = (props: Props) => {
           {props.extras}
         </Tabs>
       </div>
-      <div className="hidden sm:flex sm:flex-row sm:flex-wrap sm:divide-x">
+      <div className="hidden sm:flex sm:flex-row sm:flex-wrap xl:divide-x">
         <div className="flex flex-col w-full pb-2 xl:w-1/2 xl:pr-2">
           <Header extras={props.extras}>Thông tin chung</Header>
           <div className="flex-1">

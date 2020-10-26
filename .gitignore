@@ -14,10 +14,11 @@
 
 # misc
 .DS_Store
-env
-env.development
+.env
+.env.development
 env.test
 env.production
+/styles/tailwind.out.css
 
 npm-debug.log*
 yarn-debug.log*
