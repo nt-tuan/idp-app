@@ -1,5 +1,5 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { Tabs, Tab, Icon } from "@blueprintjs/core";
+import { Tabs, Tab, Icon, Popover } from "@blueprintjs/core";
 import { Spinner, Header, toastError } from "components/Core";
 import { OutlineButton } from "components/Core/Button";
 import { ErrorMessage } from "components/Core/ErrorMessage";
@@ -105,39 +105,51 @@ export const UserViewerConsumer = () => {
       editing={editing}
       error={error}
       extras={
-        <div className="flex flex-row items-center">
-          <OutlineButton onClick={handleResetPassword}>
-            <Icon className="mr-1" icon="refresh" /> Reset password
+        <Popover
+          content={
+            <div className="flex flex-col">
+              <OutlineButton onClick={handleResetPassword}>
+                <Icon iconSize={12} className="mr-2" icon="refresh" /> Reset
+                password
+              </OutlineButton>
+              {isLocked ? (
+                <UnlockUser
+                  oidcUser={oidcUser}
+                  userId={user.id}
+                  onChange={refreshUser}
+                />
+              ) : (
+                <LockUser
+                  oidcUser={oidcUser}
+                  userId={user.id}
+                  onChange={refreshUser}
+                />
+              )}
+              {!editing && (
+                <OutlineButton
+                  onClick={() => setEditing(true)}
+                  className="mr-1"
+                >
+                  <EditIcon className="w-4 h-4 mr-1" /> Sửa
+                </OutlineButton>
+              )}
+              {editing && (
+                <>
+                  <OutlineButton onClick={handleSave} className="mr-1">
+                    Lưu
+                  </OutlineButton>
+                  <OutlineButton onClick={() => refreshUser()} className="mr-1">
+                    Hủy
+                  </OutlineButton>
+                </>
+              )}
+            </div>
+          }
+        >
+          <OutlineButton>
+            <Icon icon="menu" />
           </OutlineButton>
-          {isLocked ? (
-            <UnlockUser
-              oidcUser={oidcUser}
-              userId={user.id}
-              onChange={refreshUser}
-            />
-          ) : (
-            <LockUser
-              oidcUser={oidcUser}
-              userId={user.id}
-              onChange={refreshUser}
-            />
-          )}
-          {!editing && (
-            <OutlineButton onClick={() => setEditing(true)} className="mr-1">
-              <EditIcon className="w-5 h-5 mr-1" /> Sửa
-            </OutlineButton>
-          )}
-          {editing && (
-            <>
-              <OutlineButton onClick={handleSave} className="mr-1">
-                Lưu
-              </OutlineButton>
-              <OutlineButton onClick={() => refreshUser()} className="mr-1">
-                Hủy
-              </OutlineButton>
-            </>
-          )}
-        </div>
+        </Popover>
       }
       onRevoked={revokeRole}
       onGranted={grantRole}
@@ -208,7 +220,7 @@ export const UserViewer = (props: Props) => {
         </Tabs>
       </div>
       <div className="hidden sm:flex sm:flex-row sm:flex-wrap xl:divide-x">
-        <div className="flex flex-col w-full pb-2 xl:w-1/2 xl:pr-2">
+        <div className="flex flex-col w-full pb-10 xl:w-1/2 xl:pr-4 xl:pb-0">
           <Header extras={props.extras}>Thông tin chung</Header>
           <div className="flex-1">
             {props.onChange && props.editing ? (
@@ -222,7 +234,7 @@ export const UserViewer = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col w-full pb-2 xl:w-1/2 xl:pl-2">
+        <div className="flex flex-col w-full xl:w-1/2 xl:pl-4">
           <Header>Vai trò</Header>
           <div className="flex-1 overflow-y-auto">
             <UserRolesEditor

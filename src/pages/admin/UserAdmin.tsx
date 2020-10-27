@@ -65,6 +65,7 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
       .catch(setError);
   }, [oidcUser, match]);
   React.useEffect(() => {
+    setUser(undefined);
     refreshUser();
   }, [refreshUser]);
   const breadscrumbs = React.useMemo(() => {
