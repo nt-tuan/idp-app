@@ -14,8 +14,6 @@
 
 # misc
 .DS_Store
-.env
-.env.development
 env.test
 env.production
 /styles/tailwind.out.css
