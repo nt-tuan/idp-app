@@ -1,6 +1,6 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { Breadscrumbs, newBreadscrumb } from "components/Core";
-import { UserMenu } from "components/User/UserMenu";
+import { UserSelect } from "components/User/UserSelect";
 import { Layout2 } from "components/Layout/Layout2";
 import React from "react";
 import { userAPI } from "resources/apis/user";
@@ -9,16 +9,17 @@ import { routes } from "routes";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { LayoutContext } from "components/Layout/PageLayout";
 import { User } from "oidc-client";
-import { RolesProps } from "resources/models/role";
+import { IRole } from "resources/models/role";
 import { RequestError } from "resources/apis/api";
 import { ErrorMessage } from "components/Core/ErrorMessage";
 interface UserLayoutContextProps {
   users: IUser[];
-  roles: RolesProps[];
+  roles: IRole[];
   user?: IUser;
   refreshUser: () => void;
   onUserChange: React.Dispatch<React.SetStateAction<IUser | undefined>>;
   setUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
+  setRoles: React.Dispatch<React.SetStateAction<IRole[]>>;
 }
 type TParams = { id: string };
 export const UserLayoutContext = React.createContext<UserLayoutContextProps>({
@@ -27,6 +28,7 @@ export const UserLayoutContext = React.createContext<UserLayoutContextProps>({
   refreshUser: () => {},
   onUserChange: () => {},
   setUsers: () => [],
+  setRoles: () => [],
 });
 const initialLoad = async (oidcUser: User) => {
   const users = await userAPI.list(oidcUser, 0, 100, "id", 1);
@@ -40,7 +42,7 @@ export const UserAdmin = (props: RouteComponentProps<TParams>) => {
 const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
   const [users, setUsers] = React.useState<IUser[]>([]);
   const [user, setUser] = React.useState<IUser>();
-  const [roles, setRoles] = React.useState<RolesProps[]>([]);
+  const [roles, setRoles] = React.useState<IRole[]>([]);
   const [error, setError] = React.useState<RequestError>();
   const { oidcUser } = useReactOidc();
   const { setBreadscrumbs } = React.useContext(LayoutContext);
@@ -96,6 +98,7 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
         user,
         refreshUser,
         setUsers,
+        setRoles,
         onUserChange: setUser,
       }}
     >
@@ -105,7 +108,7 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
         </div>
         <div className="flex flex-1">
           <Layout2
-            left={<UserMenu users={users} selected={user} />}
+            left={<UserSelect users={users} selected={user} />}
             main={
               <Switch>
                 <Route

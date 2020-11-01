@@ -8,7 +8,7 @@ interface Props {
   selected?: IUser;
   users: IUser[];
 }
-export const UserMenu = ({ selected, users }: Props) => {
+export const UserSelect = ({ selected, users }: Props) => {
   const [query, setQuery] = React.useState("");
   const history = useHistory();
 

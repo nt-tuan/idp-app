@@ -4,10 +4,12 @@ import { UnlockIcon } from "components/Icon/Icons";
 import { User } from "oidc-client";
 import React from "react";
 import { userAPI } from "resources/apis/user";
+import cx from "classnames";
 interface Props {
   oidcUser: User;
   userId: string;
   onChange: () => void;
+  className?: string;
 }
 
 export const UnlockUser = (props: Props) => {
@@ -18,7 +20,10 @@ export const UnlockUser = (props: Props) => {
       .catch(toastError);
   };
   return (
-    <OutlineButton className="mr-1" onClick={handleUnlock}>
+    <OutlineButton
+      className={cx("mr-1", props.className)}
+      onClick={handleUnlock}
+    >
       <UnlockIcon className="w-5 h-5 pr-1" /> Mở khóa
     </OutlineButton>
   );

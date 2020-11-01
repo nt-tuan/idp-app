@@ -5,19 +5,20 @@ import { OutlineButton } from "components/Core/Button";
 import { ErrorMessage } from "components/Core/ErrorMessage";
 import { toastSuccess } from "components/Core/toaster";
 import { EditIcon } from "components/Icon/Icons";
+import { RoleCreatorButton } from "components/Role/RoleCreatorButton";
 import { UserRolesEditor } from "components/User/UserRolesEditor";
 import { UserLayoutContext } from "pages/admin/UserAdmin";
 import React from "react";
 import Avatar from "react-avatar";
 import { RequestError } from "resources/apis/api";
 import { userAPI } from "resources/apis/user";
-import { RolesProps } from "resources/models/role";
+import { IRole } from "resources/models/role";
 import { isUserLocked, IUser } from "resources/models/user";
 import { LockUser } from "./LockUser";
 import { UnlockUser } from "./UnlockUser";
 import { UserInfoEditor } from "./UserInfoEditor";
 export const UserViewerConsumer = () => {
-  const { user: ctxUser, roles, refreshUser } = React.useContext(
+  const { user: ctxUser, roles, setRoles, refreshUser } = React.useContext(
     UserLayoutContext
   );
   const [editing, setEditing] = React.useState(false);
@@ -95,6 +96,10 @@ export const UserViewerConsumer = () => {
       )
       .catch(toastError);
   };
+  const handleCreatedRole = (role: IRole) => {
+    toastSuccess(<div>Thêm vai trò {role.name} thành công.</div>);
+    setRoles((roles) => [...roles, role]);
+  };
   if (user == null) return <Spinner />;
   return (
     <UserViewer
@@ -104,22 +109,24 @@ export const UserViewerConsumer = () => {
       onChange={setUser}
       editing={editing}
       error={error}
-      extras={
+      extrasGeneral={
         <Popover
           content={
-            <div className="flex flex-col">
-              <OutlineButton onClick={handleResetPassword}>
+            <div className="flex flex-col divide-y pt-2 px-2">
+              <OutlineButton className="py-2" onClick={handleResetPassword}>
                 <Icon iconSize={12} className="mr-2" icon="refresh" /> Reset
                 password
               </OutlineButton>
               {isLocked ? (
                 <UnlockUser
+                  className="py-2"
                   oidcUser={oidcUser}
                   userId={user.id}
                   onChange={refreshUser}
                 />
               ) : (
                 <LockUser
+                  className="py-2"
                   oidcUser={oidcUser}
                   userId={user.id}
                   onChange={refreshUser}
@@ -127,18 +134,18 @@ export const UserViewerConsumer = () => {
               )}
               {!editing && (
                 <OutlineButton
+                  className="py-2"
                   onClick={() => setEditing(true)}
-                  className="mr-1"
                 >
                   <EditIcon className="w-4 h-4 mr-1" /> Sửa
                 </OutlineButton>
               )}
               {editing && (
                 <>
-                  <OutlineButton onClick={handleSave} className="mr-1">
+                  <OutlineButton className="py-2" onClick={handleSave}>
                     Lưu
                   </OutlineButton>
-                  <OutlineButton onClick={() => refreshUser()} className="mr-1">
+                  <OutlineButton onClick={() => refreshUser()} className="py-2">
                     Hủy
                   </OutlineButton>
                 </>
@@ -151,19 +158,23 @@ export const UserViewerConsumer = () => {
           </OutlineButton>
         </Popover>
       }
+      extrasRoles={<RoleCreatorButton onSuccess={handleCreatedRole} />}
       onRevoked={revokeRole}
       onGranted={grantRole}
+      onRoleCreated={handleCreatedRole}
     />
   );
 };
 interface Props {
-  allRoles: RolesProps[];
+  allRoles: IRole[];
   userRoles: string[];
   user: IUser;
-  extras?: React.ReactNode;
+  extrasGeneral?: React.ReactNode;
+  extrasRoles?: React.ReactNode;
   onRevoked?: (role: string) => void;
   onGranted?: (role: string) => void;
   onChange?: (user: IUser) => void;
+  onRoleCreated?: (role: IRole) => void;
   editing?: boolean;
   error?: RequestError;
 }
@@ -196,32 +207,49 @@ const AccessLogs = ({ user }: Props) => (
   <i>Không có thông tin truy cập của tài khoản này</i>
 );
 
-export const UserViewer = (props: Props) => {
+const UserViewMobile = (props: Props) => {
+  const [selectedTabId, setSelectedTabId] = React.useState<React.ReactText>(
+    "general"
+  );
+  const extras = React.useMemo(() => {
+    if (selectedTabId === "general") return props.extrasGeneral;
+    if (selectedTabId === "roles") return props.extrasRoles;
+    return <></>;
+  }, [props, selectedTabId]);
   return (
     <>
       {props.error && <ErrorMessage {...props.error} />}
-      <div className="block sm:hidden">
-        <Tabs defaultSelectedTabId="general">
-          <Tab title="Chung" id="general" panel={<GeneralInfo {...props} />} />
-          <Tab
-            title="Phân quyền"
-            id="roles"
-            panel={
-              <UserRolesEditor
-                allRoles={props.allRoles}
-                roles={props.user.roles}
-                onGranted={props.onGranted}
-                onRevoked={props.onRevoked}
-              />
-            }
-          />
-          <Tabs.Expander />
-          {props.extras}
-        </Tabs>
-      </div>
-      <div className="hidden sm:flex sm:flex-row sm:flex-wrap xl:divide-x">
+      <Tabs
+        selectedTabId={selectedTabId}
+        onChange={(newTab) => setSelectedTabId(newTab)}
+      >
+        <Tab title="Chung" id="general" panel={<GeneralInfo {...props} />} />
+        <Tab
+          title="Vai trò"
+          id="roles"
+          panel={
+            <UserRolesEditor
+              allRoles={props.allRoles}
+              roles={props.user.roles}
+              onGranted={props.onGranted}
+              onRevoked={props.onRevoked}
+            />
+          }
+        />
+        <Tab title="Truy cập" id="access" panel={<AccessLogs {...props} />} />
+        <Tabs.Expander />
+        {extras}
+      </Tabs>
+    </>
+  );
+};
+
+export const UserViewDesktop = (props: Props) => {
+  return (
+    <>
+      <div className="flex flex-row flex-wrap xl:divide-x">
         <div className="flex flex-col w-full pb-10 xl:w-1/2 xl:pr-4 xl:pb-0">
-          <Header extras={props.extras}>Thông tin chung</Header>
+          <Header extras={props.extrasGeneral}>Thông tin chung</Header>
           <div className="flex-1">
             {props.onChange && props.editing ? (
               <UserInfoEditor
@@ -234,23 +262,39 @@ export const UserViewer = (props: Props) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col w-full xl:w-1/2 xl:pl-4">
-          <Header>Vai trò</Header>
-          <div className="flex-1 overflow-y-auto">
-            <UserRolesEditor
-              allRoles={props.allRoles}
-              roles={props.userRoles}
-              onGranted={props.onGranted}
-              onRevoked={props.onRevoked}
-            />
+        {props.onRoleCreated && (
+          <div className="flex flex-col w-full xl:w-1/2 xl:pl-4">
+            <Header extras={props.extrasRoles}>Vai trò</Header>
+            <div className="flex-1 overflow-y-auto">
+              <UserRolesEditor
+                allRoles={props.allRoles}
+                roles={props.userRoles}
+                onGranted={props.onGranted}
+                onRevoked={props.onRevoked}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="w-full pt-10">
         <Header>Lịch sử truy cập</Header>
         <div>
           <AccessLogs {...props} />
         </div>
+      </div>
+    </>
+  );
+};
+
+export const UserViewer = (props: Props) => {
+  return (
+    <>
+      {props.error && <ErrorMessage {...props.error} />}
+      <div className="block sm:hidden">
+        <UserViewMobile {...props} />
+      </div>
+      <div className="hidden sm:block">
+        <UserViewDesktop {...props} />
       </div>
     </>
   );

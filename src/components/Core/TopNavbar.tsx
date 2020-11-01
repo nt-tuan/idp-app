@@ -44,7 +44,7 @@ const UserMenu = () => {
       position={Position.BOTTOM}
     >
       <TextButton>
-        <div className="flex flex-row items-end justify-end">
+        <div className="flex flex-row justify-end">
           <Avatar
             size="18px"
             textSizeRatio={1.7}
@@ -107,20 +107,15 @@ const CollapseMenu = ({ routes }: { routes: PageRoute<any>[] }) => {
 
 const LargeTopbar = ({ routes, breadscrumbs }: Props) => {
   return (
-    <div className="fixed inset-x-0 top-0 flex-row items-center hidden h-10 px-2 shadow sm:flex">
-      <div className="flex flex-row items-center self-center">
-        <img
-          className="hidden h-full inner sm:block"
-          src="/logo.svg"
-          alt="logo"
-          width="32"
-        />
-        <div className="hidden pl-1 text-lg font-extrabold text-blue-500 sm:block">
+    <div className="fixed inset-x-0 top-0 flex-row items-baseline hidden py-1 px-2 shadow sm:flex">
+      <div className="flex flex-row items-baseline">
+        <LogoIcon className="w-6 h-5 text-blue-500" />
+        <div className="pl-1 text-lg font-extrabold text-blue-500">
           MY SHELL
         </div>
         <div className="pr-2 border-r-2 border-blue-500" />
       </div>
-      <div className="hidden sm:flex sm:flex-row sm:items-baseline sm:flex-1">
+      <div className="flex flex-row items-baseline flex-1">
         {routes &&
           routes.map((route) => <NavLinkItem key={route.path} route={route} />)}
       </div>

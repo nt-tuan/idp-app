@@ -6,7 +6,10 @@ import { toastSuccess } from "components/Core/toaster";
 import React from "react";
 import { RequestError } from "resources/apis/api";
 import { meAPI } from "resources/apis/me";
-import { translateErrorMessage } from "resources/translation/errors";
+import {
+  defaultErrorMessage,
+  translateErrorMessages,
+} from "resources/translation/errors";
 interface State {
   oldPassword: string;
   newPassword: string;
@@ -65,10 +68,12 @@ export const ChangePassword = () => {
       .then(() => toastSuccess("Đổi mật khẩu thành công"))
       .catch((err: RequestError) => {
         if (err.messages == null) return;
-        const message = translateErrorMessage(err.message);
+        const messages = translateErrorMessages(
+          err.messages,
+          defaultErrorMessage
+        );
         setError({
-          message,
-          messages: [message],
+          messages,
         });
       });
   };

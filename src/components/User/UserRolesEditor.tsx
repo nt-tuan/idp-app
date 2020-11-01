@@ -1,9 +1,9 @@
 import React from "react";
-import { RolesProps, UserRolesProps } from "resources/models/role";
+import { IRole, UserRolesProps } from "resources/models/role";
 import { Checkbox } from "@blueprintjs/core";
 
 interface Props {
-  allRoles: RolesProps[];
+  allRoles: IRole[];
   roles: string[];
   onGranted?: (role: string) => void;
   onRevoked?: (role: string) => void;

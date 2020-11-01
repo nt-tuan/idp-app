@@ -3,9 +3,9 @@ import { IUser } from "resources/models/user";
 import { FormGroup, InputGroup } from "@blueprintjs/core";
 import Avatar from "react-avatar";
 import { EditIcon } from "components/Icon/Icons";
-import { RolesProps } from "resources/models/role";
+import { IRole } from "resources/models/role";
 interface Props {
-  allRoles: RolesProps[];
+  allRoles: IRole[];
   user: IUser;
   onChange: (user: IUser) => void;
   onRefresh?: () => void;

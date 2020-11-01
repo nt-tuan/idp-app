@@ -4,12 +4,12 @@ import { UserViewer } from "components/User/UserViewer";
 import React from "react";
 import { meAPI } from "resources/apis/me";
 import { userAPI } from "resources/apis/user";
-import { RolesProps } from "resources/models/role";
+import { IRole } from "resources/models/role";
 import { IUser } from "resources/models/user";
 
 export const Home = () => {
   const [user, setUser] = React.useState<IUser>();
-  const [roles, setRoles] = React.useState<RolesProps[]>([]);
+  const [roles, setRoles] = React.useState<IRole[]>([]);
   const { oidcUser } = useReactOidc();
   React.useEffect(() => {
     meAPI.get(oidcUser).then(setUser);

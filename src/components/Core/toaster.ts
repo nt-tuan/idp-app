@@ -1,5 +1,9 @@
 import { Position, Toaster } from "@blueprintjs/core";
 import { RequestError } from "resources/apis/api";
+import {
+  defaultErrorMessage,
+  translateErrorMessages,
+} from "resources/translation/errors";
 
 /** Singleton toaster instance. Create separate instances for different options. */
 export const AppToaster = Toaster.create({
@@ -8,9 +12,9 @@ export const AppToaster = Toaster.create({
 });
 
 export const toastError = (err: RequestError) => {
-  const message = err.message;
+  const messages = translateErrorMessages(err.messages, defaultErrorMessage);
   const intent = "danger";
-  AppToaster.show({ message, intent });
+  messages.forEach((message) => AppToaster.show({ message, intent }));
 };
 export const toastSuccess = (message: React.ReactNode, timeout?: number) => {
   AppToaster.show({ message, intent: "success", timeout });

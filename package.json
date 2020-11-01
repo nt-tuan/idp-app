@@ -27,7 +27,7 @@
     "oauth2-client-js": "^0.0.15",
     "oidc-client": "^1.10.1",
     "openid-client": "^4.1.1",
-    "postcss": "^8.1.1",
+    "postcss": "^8.1.4",
     "postcss-cli": "^8.1.0",
     "postcss-import": "^12.0.1",
     "query-string": "^6.13.1",
@@ -46,7 +46,7 @@
     "build:css": "postcss src/styles/tailwind.css -o src/styles/tailwind.out.css",
     "prestart": "yarn run build:css",
     "prebuild": "yarn run build:css",
-    "start": "set HTTPS=true&&react-scripts start",
+    "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

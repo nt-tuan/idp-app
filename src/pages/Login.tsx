@@ -4,7 +4,11 @@ import { RequestError } from "resources/apis/api";
 import queryString from "query-string";
 import { Button, ControlGroup, Icon, InputGroup } from "@blueprintjs/core";
 import { Spinner } from "components/Core";
-import { translateErrorMessage } from "resources/translation/errors";
+import {
+  defaultErrorMessage,
+  translateErrorMessages,
+} from "resources/translation/errors";
+import { ErrorMessage } from "components/Core/ErrorMessage";
 
 const SkipLoginView = ({
   username,
@@ -66,10 +70,10 @@ export const Login = () => {
   const [login_challenge, setChallenge] = useState<string>();
   const [cred, setCred] = useState<{ username: string; password: string }>();
   const [skip, setSkip] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>();
+  const [messages, setMessages] = useState<string[]>();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setMessage(undefined);
+    setMessages(undefined);
     if (cred == null) return;
     setCred((cred) => (cred ? { ...cred, [name]: value } : cred));
   };
@@ -91,16 +95,18 @@ export const Login = () => {
           window.location.href = res.redirect_to;
         })
         .catch((err: RequestError) => {
-          setMessage(translateErrorMessage(err.message));
+          setMessages(
+            translateErrorMessages(err.messages, defaultErrorMessage)
+          );
         });
       return;
     }
     if (cred.username === "") {
-      setMessage("Bạn chưa điền tên tài khoản kìa");
+      setMessages(["Bạn chưa điền tên tài khoản kìa"]);
       return;
     }
     if (cred.password === "") {
-      setMessage("Bạn chưa điền mật khẩu kìa");
+      setMessages(["Bạn chưa điền mật khẩu kìa"]);
       return;
     }
 
@@ -110,7 +116,7 @@ export const Login = () => {
         window.location.href = res.redirect_to;
       })
       .catch((err: RequestError) => {
-        setMessage(err.message);
+        setMessages(translateErrorMessages(err.messages, defaultErrorMessage));
       });
   };
 
@@ -150,9 +156,9 @@ export const Login = () => {
 
   return (
     <div className="text-gray-700">
-      {message && (
-        <div className="flex flex-row items-baseline px-2 py-1 mb-2">
-          <Icon className="pr-2" iconSize={12} icon="warning-sign" /> {message}
+      {messages && (
+        <div className="mb-2">
+          <ErrorMessage messages={messages} />
         </div>
       )}
       {skip ? (

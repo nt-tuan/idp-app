@@ -6,10 +6,12 @@ import { User } from "oidc-client";
 import moment from "moment";
 import React from "react";
 import { userAPI } from "resources/apis/user";
+import cx from "classnames";
 interface Props {
   oidcUser: User;
   userId: string;
   onChange: () => void;
+  className?: string;
 }
 export const LockUser = (props: Props) => {
   const handleLock = (
@@ -25,7 +27,7 @@ export const LockUser = (props: Props) => {
   return (
     <Popover
       content={
-        <Menu className="divide-y px-2">
+        <Menu className={cx("divide-y px-2", props.className)}>
           <MenuItem content="1 ngày" onClick={() => handleLock(1, "day")} />
           <MenuItem content="1 tuần" onClick={() => handleLock(1, "week")} />
           <MenuItem content="1 tháng" onClick={() => handleLock(1, "month")} />

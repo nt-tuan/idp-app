@@ -63,7 +63,7 @@ const translationArray = [
   {
     "-name": "PasswordMismatch",
     "-xml:space": "preserve",
-    value: "Tài khoản hoặc mật khẩu không đúng",
+    value: "Mật khẩu không đúng",
     comment: "Error when a password doesn't match",
   },
   {
@@ -229,12 +229,26 @@ export const errorTranslation = translationArray.reduce(
   },
   {}
 );
-
-export const translateErrorMessage = (message: string) => {
-  return Object.keys(errorTranslation).reduce((result, key) => {
-    if (message.startsWith(key)) {
-      return errorTranslation[key];
-    }
-    return result;
-  }, "Opps, đã có lỗi xãy ra, vui lòng quay lại trong giây lát nhé");
+export const defaultErrorMessage =
+  "Opps, đã có lỗi xãy ra, vui lòng quay lại trong giây lát nhé";
+export const translateErrorMessage: (message: string) => string | undefined = (
+  message: string
+) => {
+  return Object.keys(errorTranslation).reduce(
+    (result: string | undefined, key) => {
+      if (message.startsWith(key)) {
+        return errorTranslation[key];
+      }
+      return result;
+    },
+    undefined
+  );
+};
+export const translateErrorMessages: (
+  messages: string[],
+  defaultMessage?: string
+) => string[] = (messages: string[], defaultMessage?: string) => {
+  return messages.map(
+    (message) => translateErrorMessage(message) ?? defaultMessage ?? message
+  );
 };

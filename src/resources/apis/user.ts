@@ -2,7 +2,7 @@ import { CreatedUser, IUser } from "../models/user";
 import { api } from "./api";
 import queryString from "query-string";
 import { User } from "oidc-client";
-import { RolesProps } from "../models/role";
+import { IRole } from "../models/role";
 
 const base = process.env.REACT_APP_API_URL;
 const list = async (
@@ -65,8 +65,8 @@ const unlock = async (user: User, id: string) =>
   await api.post(`${base}/api/admin/user/${id}/unlock`, undefined, user);
 
 const getRoles = async (user: User) => {
-  var roles = await api.get<RolesProps[]>(`${base}/api/admin/roles`, user);
-  if (roles === undefined) return [] as RolesProps[];
+  var roles = await api.get<IRole[]>(`${base}/api/admin/roles`, user);
+  if (roles === undefined) return [] as IRole[];
   return roles;
 };
 const resetPassword = async (user: User, id: string) =>

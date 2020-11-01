@@ -1,8 +1,8 @@
-export interface RolesProps {
+export interface IRole {
   name: string;
   description: string;
 }
 
-export interface UserRolesProps extends RolesProps {
+export interface UserRolesProps extends IRole {
   has: boolean;
 }

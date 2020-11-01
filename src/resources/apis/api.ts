@@ -1,11 +1,10 @@
 import { User } from "oidc-client";
 export interface RequestError {
-  message: string;
-  messages?: string[];
+  messages: string[];
 }
 
 const err = (message: string) => {
-  return { message } as RequestError;
+  return { messages: [message] } as RequestError;
 };
 const ErrEmptyRespose = err("empty-response");
 const request = async <T>(
