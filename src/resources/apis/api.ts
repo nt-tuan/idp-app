@@ -19,7 +19,7 @@ const request = async <T>(
   const requestInit = user
     ? {
         url,
-        headers: { ...headers, Authorization: `Bearer ${user.id_token}` },
+        headers: { ...headers, Authorization: `Bearer ${user.access_token}` },
         body,
         method,
       }
