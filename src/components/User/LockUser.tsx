@@ -1,7 +1,5 @@
-import { Popover } from "@blueprintjs/core";
-import { Menu, MenuItem, toastError } from "components/Core";
-import { OutlineButton } from "components/Core/Button";
-import { LockIcon } from "components/Icon/Icons";
+import { AnchorButton, Popover } from "@blueprintjs/core";
+import { Menu, MenuItem, toastError } from "components/core";
 import { User } from "oidc-client";
 import moment from "moment";
 import React from "react";
@@ -26,6 +24,7 @@ export const LockUser = (props: Props) => {
   };
   return (
     <Popover
+      fill
       content={
         <Menu className={cx("divide-y px-2", props.className)}>
           <MenuItem content="1 ngày" onClick={() => handleLock(1, "day")} />
@@ -35,9 +34,9 @@ export const LockUser = (props: Props) => {
         </Menu>
       }
     >
-      <OutlineButton className="mr-1">
-        <LockIcon className="w-5 h-5 pr-1" /> Khóa
-      </OutlineButton>
+      <AnchorButton alignText="left" minimal icon="lock" className="mr-1" fill>
+        Khóa
+      </AnchorButton>
     </Popover>
   );
 };

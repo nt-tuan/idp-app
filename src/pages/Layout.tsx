@@ -4,6 +4,7 @@ import { Login, Consent } from "pages";
 import { Logout, LogoutFailed } from "pages/Logout";
 import { Home } from "pages/Home";
 import { LogoutCallback } from "./LogoutCallback";
+import { LogoIcon } from "components/icon/Icons";
 const RedirectHome = () => <Redirect to="/" />;
 export const PublicLayout = () => {
   return (
@@ -12,11 +13,11 @@ export const PublicLayout = () => {
         className="bg-gray-100 rounded-lg shadow"
         style={{ height: "500px", width: "312px", margin: "auto" }}
       >
-        <div className="flex flex-col items-center w-full h-full px-4">
-          <div className="flex flex-row items-center justify-center py-2">
-            <img className="inner" src="/logo.svg" alt="logo" width="48" />
-            <div className="pl-2 text-4xl font-extrabold text-blue-500">
-              MY SHELL
+        <div className="flex flex-col items-baseline w-full h-full px-4">
+          <div className="flex flex-row items-baseline justify-center py-2">
+            <LogoIcon className="w-12 h-12 text-blue-500" />
+            <div className="pl-8 text-4xl font-extrabold text-blue-500">
+              MY-SHELL
             </div>
           </div>
           <div className="flex-1 w-full px-2">

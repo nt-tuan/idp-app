@@ -7,7 +7,7 @@ import { AdminLayout } from "pages/admin";
 import { NotAuthenticated } from "pages/NotAuthenticated";
 import { NotAuthorized } from "pages/NotAuthorized";
 import { Me } from "pages/me";
-import { Spinner } from "components/Core";
+import { Spinner } from "components/core";
 
 const PageLoading = () => {
   return (

@@ -1,18 +1,3 @@
-export interface DepartmentProps {
-  id: number;
-  fullname: string;
-  shortname: string;
-  code: string;
-}
-export interface EmployeProps {
-  id: number;
-  fullname: string;
-  code: string;
-  birthday?: Date;
-  gender: number;
-  department?: DepartmentProps;
-}
-
 export interface IUser {
   id: string;
   username: string;
@@ -21,7 +6,6 @@ export interface IUser {
   image?: string;
   roles: string[];
   fullname?: string;
-  employee?: EmployeProps;
   lockoutEnable: boolean;
   lockoutEnd?: string;
 }
@@ -47,3 +31,16 @@ export const isUserLocked = (user: IUser) => {
     new Date(user.lockoutEnd) > new Date()
   );
 };
+
+export interface UserSignInLog {
+  id: number;
+  userName: string;
+  acceptedLoginAt: string;
+  acceptedConsentAt?: string;
+  loginChallenge?: string;
+  consentChallenge?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  requestedScope?: string;
+  grantedScope?: string;
+}

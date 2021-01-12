@@ -1,8 +1,9 @@
-import { CreatedUser, IUser } from "../models/user";
+import { CreatedUser, IUser, UserSignInLog } from "../models/user";
 import { api } from "./api";
 import queryString from "query-string";
 import { User } from "oidc-client";
 import { IRole } from "../models/role";
+import { Consent } from "resources/models/consent";
 
 const base = process.env.REACT_APP_API_URL;
 const list = async (
@@ -75,7 +76,26 @@ const resetPassword = async (user: User, id: string) =>
     undefined,
     user
   );
-
+const getAccessLogs = async (userId: string, oidcUser: User) =>
+  await api.get<UserSignInLog[]>(
+    `${base}/api/admin/user/${userId}/accessLogs`,
+    oidcUser
+  );
+const getConsentSession = async (userId: string, oidcUser: User) =>
+  await api.get<Consent.ConsentSession[]>(
+    `${base}/api/admin/user/${userId}/consentSessions`,
+    oidcUser
+  );
+const revokeSession = async (
+  userId: string,
+  clientId: string,
+  oidcUser: User
+) =>
+  await api.delete(
+    `${base}/api/admin/user/${userId}/revokeConsentSession?client=${clientId}`,
+    undefined,
+    oidcUser
+  );
 export const userAPI = {
   get,
   update,
@@ -87,4 +107,7 @@ export const userAPI = {
   create,
   getRoles,
   resetPassword,
+  getAccessLogs,
+  getConsentSession,
+  revokeSession,
 };

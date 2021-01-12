@@ -3,12 +3,12 @@ import { idp } from "resources";
 import { RequestError } from "resources/apis/api";
 import queryString from "query-string";
 import { Button, ControlGroup, Icon, InputGroup } from "@blueprintjs/core";
-import { Spinner } from "components/Core";
+import { Spinner } from "components/core";
 import {
   defaultErrorMessage,
   translateErrorMessages,
 } from "resources/translation/errors";
-import { ErrorMessage } from "components/Core/ErrorMessage";
+import { ErrorMessage } from "components/core/ErrorMessage";
 
 const SkipLoginView = ({
   username,
@@ -135,7 +135,7 @@ export const Login = () => {
       .then((res) => {
         setSkip(res.skip);
         if (res.skip) {
-          setCred({ password: "", username: res.username });
+          setCred({ password: "", username: res.subject });
           return;
         }
         setCred({ password: "", username: "" });

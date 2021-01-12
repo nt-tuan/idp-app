@@ -1,10 +1,9 @@
-import { toastError } from "components/Core";
-import { OutlineButton } from "components/Core/Button";
-import { UnlockIcon } from "components/Icon/Icons";
+import { toastError } from "components/core";
 import { User } from "oidc-client";
 import React from "react";
 import { userAPI } from "resources/apis/user";
 import cx from "classnames";
+import { AnchorButton } from "@blueprintjs/core";
 interface Props {
   oidcUser: User;
   userId: string;
@@ -20,11 +19,13 @@ export const UnlockUser = (props: Props) => {
       .catch(toastError);
   };
   return (
-    <OutlineButton
+    <AnchorButton
+      minimal
+      icon="unlock"
       className={cx("mr-1", props.className)}
       onClick={handleUnlock}
     >
-      <UnlockIcon className="w-5 h-5 pr-1" /> Mở khóa
-    </OutlineButton>
+      Mở khóa
+    </AnchorButton>
   );
 };

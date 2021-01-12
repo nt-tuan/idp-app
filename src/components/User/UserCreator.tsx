@@ -1,15 +1,19 @@
 import React from "react";
-import { Checkbox, FormGroup, Icon, InputGroup } from "@blueprintjs/core";
+import {
+  AnchorButton,
+  Checkbox,
+  FormGroup,
+  InputGroup,
+} from "@blueprintjs/core";
 import { CreatedUser, IUser } from "resources/models/user";
 import { UserRolesEditor } from "./UserRolesEditor";
 import { userAPI } from "resources/apis/user";
-import { toastError, Header } from "components/Core";
+import { toastError, Header } from "components/core";
 import { DatePicker } from "@blueprintjs/datetime";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { useHistory } from "react-router-dom";
 import { UserLayoutContext } from "pages/admin/UserAdmin";
-import { routes } from "routes";
-import { OutlineButton } from "components/Core/Button";
+import { UsersRoute, UserViewRoute } from "routes/admin";
 interface Props {
   onChange: (user: IUser) => void;
   onClose?: () => void;
@@ -19,10 +23,10 @@ export const UserCreatorConsumer = () => {
   const history = useHistory();
   const handleChange = (user: IUser) => {
     setUsers((users) => [...users, user]);
-    history.push(routes.UserViewRoute.getPath(user.id));
+    history.push(UserViewRoute.getPath(user.id));
   };
   const handleClose = () => {
-    history.push(routes.UsersRoute.getPath(undefined));
+    history.push(UsersRoute.getPath(undefined));
   };
   return (
     <UserCreator onChange={handleChange} onClose={handleClose}></UserCreator>
@@ -64,13 +68,13 @@ export const UserCreator = ({ onChange, onClose }: Props) => {
       <Header
         extras={
           <div>
-            <OutlineButton onClick={handleSave}>
-              <Icon icon="floppy-disk" /> Lưu
-            </OutlineButton>
+            <AnchorButton minimal icon="floppy-disk" onClick={handleSave}>
+              Lưu
+            </AnchorButton>
             {onClose && (
-              <OutlineButton onClick={onClose}>
-                <Icon icon="cross" /> Đóng
-              </OutlineButton>
+              <AnchorButton minimal icon="cross" onClick={onClose}>
+                Đóng
+              </AnchorButton>
             )}
           </div>
         }

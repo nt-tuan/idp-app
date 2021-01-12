@@ -1,17 +1,17 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { Breadscrumbs, newBreadscrumb } from "components/Core";
-import { UserSelect } from "components/User/UserSelect";
-import { Layout2 } from "components/Layout/Layout2";
+import { Breadscrumbs, newBreadscrumb } from "components/core";
+import { UserSelect } from "components/user/UserSelect";
+import { Layout2 } from "components/layout/Layout2";
 import React from "react";
 import { userAPI } from "resources/apis/user";
 import { IUser } from "resources/models/user";
-import { routes } from "routes";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import { LayoutContext } from "components/Layout/PageLayout";
 import { User } from "oidc-client";
 import { IRole } from "resources/models/role";
 import { RequestError } from "resources/apis/api";
-import { ErrorMessage } from "components/Core/ErrorMessage";
+import { ErrorMessage } from "components/core/ErrorMessage";
+import { adminRoutes } from "routes";
+import { UsersRoute, UserViewRoute } from "routes/admin";
 interface UserLayoutContextProps {
   users: IUser[];
   roles: IRole[];
@@ -45,7 +45,7 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
   const [roles, setRoles] = React.useState<IRole[]>([]);
   const [error, setError] = React.useState<RequestError>();
   const { oidcUser } = useReactOidc();
-  const { setBreadscrumbs } = React.useContext(LayoutContext);
+
   React.useEffect(() => {
     if (oidcUser == null) return;
     initialLoad(oidcUser).then(({ users, roles }) => {
@@ -72,12 +72,12 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
   }, [refreshUser]);
   const breadscrumbs = React.useMemo(() => {
     const bs = [
-      newBreadscrumb(routes.UsersRoute),
+      newBreadscrumb(UsersRoute),
       ...(user
         ? [
             {
               text: user.username,
-              href: routes.UserViewRoute.getPath(user.id),
+              href: UserViewRoute.getPath(user.id),
               active: true,
             },
           ]
@@ -86,9 +86,6 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
 
     return bs;
   }, [user]);
-  React.useEffect(() => {
-    setBreadscrumbs(breadscrumbs);
-  }, [setBreadscrumbs, breadscrumbs]);
   if (error != null) return <ErrorMessage {...error} />;
   return (
     <UserLayoutContext.Provider
@@ -104,23 +101,20 @@ const UserAdminWrapped = ({ match }: RouteComponentProps<TParams>) => {
     >
       <div className="flex flex-col h-full">
         <div className="hidden pb-2 pl-5 sm:block">
-          <Breadscrumbs breadscrumbs={breadscrumbs} />
+          <Breadscrumbs breadcrumbs={breadscrumbs} />
         </div>
         <div className="flex flex-1">
           <Layout2
             left={<UserSelect users={users} selected={user} />}
             main={
               <Switch>
-                <Route
-                  path={routes.UserViewRoute.path}
-                  exact
-                  render={routes.UserViewRoute.render}
-                />
-                <Route
-                  path={routes.UserCreateRoute.path}
-                  exact
-                  component={routes.UserCreateRoute.render}
-                />
+                {adminRoutes.map((route) => (
+                  <Route
+                    path={route.path}
+                    exact={route.exact}
+                    component={route.render}
+                  />
+                ))}
               </Switch>
             }
           />

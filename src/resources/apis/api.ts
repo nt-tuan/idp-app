@@ -19,7 +19,11 @@ const request = async <T>(
   const requestInit = user
     ? {
         url,
-        headers: { ...headers, Authorization: `Bearer ${user.access_token}` },
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${user.access_token}`,
+          "X-Subject": user.profile.sub,
+        },
         body,
         method,
       }
@@ -43,11 +47,14 @@ const post = async <T>(url: string, body?: string, user?: User) =>
   request<T>(url, "POST", body, user);
 const put = async <T>(url: string, body?: string, user?: User) =>
   request<T>(url, "PUT", body, user);
+
 export const api = {
   request,
   get,
   post,
   put,
   err,
+  delete: async <T>(url: string, body?: string, user?: User) =>
+    request<T>(url, "DELETE", body, user),
   ErrEmptyRespose,
 };

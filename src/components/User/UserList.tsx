@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { isUserLocked, IUser } from "resources/models/user";
 import { userAPI } from "resources/apis/user";
-import { Classes, HTMLTable, Icon } from "@blueprintjs/core";
-import { Header } from "components/Core";
+import { Button, Classes, HTMLTable, Icon } from "@blueprintjs/core";
+import { Header } from "components/core";
 import { Link, useHistory } from "react-router-dom";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { routes } from "routes";
-import { OutlineButton } from "components/Core/Button";
+import { UserCreateRoute, UserViewRoute } from "routes/admin";
+import { useAuthorize } from "components/identity/useAuthorize";
 export const LoadingUser = () => {
   return (
     <div>
@@ -23,17 +23,17 @@ interface Props {
 }
 const UserListView = ({ users, selected, onSelectedChange }: Props) => {
   const history = useHistory();
+  const { canEdit } = useAuthorize();
   return (
     <div className="flex flex-row w-full h-full">
       <div className="flex-1">
         <Header
           extras={
-            <Link to={routes.UserCreateRoute.path}>
-              <OutlineButton>
-                <Icon icon="plus" />
-                Thêm tài khoản
-              </OutlineButton>
-            </Link>
+            canEdit ? (
+              <Link to={UserCreateRoute.path}>
+                <Button icon="add">Thêm tài khoản</Button>
+              </Link>
+            ) : undefined
           }
         >
           Dang sách tài khoản
@@ -50,9 +50,7 @@ const UserListView = ({ users, selected, onSelectedChange }: Props) => {
             {users.map((user) => (
               <tr
                 key={user.id}
-                onClick={() =>
-                  history.push(routes.UserViewRoute.getPath(user.id))
-                }
+                onClick={() => history.push(UserViewRoute.getPath(user.id))}
               >
                 <td>{user.username}</td>
                 <td>{user.email}</td>
@@ -73,6 +71,7 @@ export const UserList = () => {
   const [selected, setSelected] = useState<IUser>();
   const ctx = useReactOidc();
   const { oidcUser } = ctx;
+
   const reload = useCallback(() => {
     userAPI.list(oidcUser, 0, 10, "id", 1).then((users) => {
       setUsers(users);

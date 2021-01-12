@@ -1,8 +1,7 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { FormGroup, InputGroup } from "@blueprintjs/core";
-import { Button } from "components/Core";
-import { ErrorMessage } from "components/Core/ErrorMessage";
-import { toastSuccess } from "components/Core/toaster";
+import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
+import { ErrorMessage } from "components/core/ErrorMessage";
+import { toastSuccess } from "components/core/toaster";
 import React from "react";
 import { RequestError } from "resources/apis/api";
 import { meAPI } from "resources/apis/me";

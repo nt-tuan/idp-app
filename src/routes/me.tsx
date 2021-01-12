@@ -1,4 +1,4 @@
-import { newProtectedRoute } from "components/Core/PrivateRoute";
+import { newProtectedRoute } from "components/core/PrivateRoute";
 import React from "react";
 const Home = React.lazy(() =>
   import("pages/me/Home").then((module) => ({ default: module.Home }))

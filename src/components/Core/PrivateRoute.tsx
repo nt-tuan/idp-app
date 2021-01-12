@@ -2,12 +2,14 @@ import React, { ComponentType, PropsWithChildren } from "react";
 import { Redirect, RouteComponentProps } from "react-router-dom";
 import { OidcSecure, useReactOidc } from "@axa-fr/react-oidc-context";
 import { User } from "oidc-client";
+import { ErrorMessage } from "./ErrorMessage";
 
 export type PageRoute<T> = {
   name: string;
   path: string;
   requireRoles?: string[];
   children?: PageRoute<any>[];
+  exact?: boolean;
   getPath: (parameters: T) => string;
   render?: (props: RouteComponentProps<any>) => JSX.Element;
   component:
@@ -20,9 +22,9 @@ export const isAuthorized = (
   oidcUser: User
 ) => {
   if (oidcUser == null || oidcUser.profile == null) return false;
-  const roles = oidcUser.profile.roles as string[];
+  const scopes = oidcUser.scopes;
   if (requireRoles == null) return true;
-  const matchRoles = roles.filter(
+  const matchRoles = scopes.filter(
     (role) =>
       requireRoles.filter((requiredRole) => requiredRole === role).length > 0
   );
@@ -60,6 +62,7 @@ export function newProtectedRoute<T>({
   requireRoles,
   getPath,
   component,
+  exact,
 }: PageRoute<any>): PageRoute<T> {
   return {
     name,
@@ -67,6 +70,7 @@ export function newProtectedRoute<T>({
     requireRoles,
     getPath,
     component,
+    exact,
     render: protect(component, requireRoles),
   };
 }
@@ -80,4 +84,20 @@ export const protect = (
       <WrappedComponent {...props} />
     </PrivateRoute>
   );
+};
+
+export const hidePrivateComponent = (
+  WrappedComponent: ComponentType<any>,
+  roles?: string[]
+) => (props: PropsWithChildren<any>) => {
+  const { oidcUser } = useReactOidc();
+  const authorized = isAuthorized(roles, oidcUser);
+  if (!authorized)
+    return (
+      <div className="w-full">
+        <ErrorMessage messages={["Bạn bị hạn chế truy cập"]} />
+      </div>
+    );
+
+  return <WrappedComponent {...props} />;
 };

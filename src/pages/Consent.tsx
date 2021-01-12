@@ -1,4 +1,4 @@
-import { Spinner } from "components/Core";
+import { Spinner } from "components/core";
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { idp } from "resources";

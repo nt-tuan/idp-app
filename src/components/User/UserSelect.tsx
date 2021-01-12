@@ -3,7 +3,7 @@ import { isUserLocked, IUser } from "resources/models/user";
 import { Icon, InputGroup } from "@blueprintjs/core";
 import cx from "classnames";
 import { useHistory } from "react-router-dom";
-import { routes } from "routes";
+import { UserViewRoute } from "routes/admin";
 interface Props {
   selected?: IUser;
   users: IUser[];
@@ -40,7 +40,7 @@ export const UserSelect = ({ selected, users }: Props) => {
             "bg-blue-400": selected && selected.id === user.id,
             "text-blue-100": selected && selected.id === user.id,
           })}
-          onClick={() => history.push(routes.UserViewRoute.getPath(user.id))}
+          onClick={() => history.push(UserViewRoute.getPath(user.id))}
         >
           <div className="flex flex-row">
             <div className="flex-1 font-bold">{user.username}</div>

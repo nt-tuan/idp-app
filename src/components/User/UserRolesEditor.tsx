@@ -38,6 +38,7 @@ export const UserRolesEditor = ({
       }),
     [roles, allRoles]
   );
+
   return (
     <>
       <div className="flex flex-col divide-y">

@@ -1,6 +1,6 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { Drawer, Icon } from "@blueprintjs/core";
-import { Button, TextButton, toastError } from "components/Core";
+import { Button, Drawer, Icon } from "@blueprintjs/core";
+import { toastError } from "components/core";
 import React from "react";
 import { roleAPI } from "resources/apis/role";
 import { IRole } from "resources/models/role";
@@ -24,9 +24,9 @@ export const RoleCreatorButton = ({ onSuccess }: Props) => {
   };
   return (
     <>
-      <TextButton onClick={() => setIsOpen(true)}>
+      <Button onClick={() => setIsOpen(true)}>
         <Icon icon="plus" />
-      </TextButton>
+      </Button>
       <Drawer
         size={Drawer.SIZE_SMALL}
         title={
