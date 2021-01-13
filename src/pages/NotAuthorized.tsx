@@ -10,7 +10,7 @@ export const NotAuthorized = () => {
   return (
     <div>
       <div>Tài khoản của bạn không được phép truy cập trang này</div>
-      <Stack className="pt-24">
+      <Stack className="pt-24 w-full justify-center">
         <Button icon="chevron-backward" onClick={() => history.goBack()}>
           Back
         </Button>
