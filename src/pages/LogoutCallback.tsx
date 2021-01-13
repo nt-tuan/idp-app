@@ -1,7 +1,7 @@
 import React from "react";
 
 export const LogoutCallback = () => {
-  const [countdown, setCountdown] = React.useState<number>(5);
+  const [countdown, setCountdown] = React.useState<number>(2);
 
   const setTimer = React.useCallback(
     (redirect_uri: string) => {

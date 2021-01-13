@@ -22,7 +22,6 @@ const request = async <T>(
         headers: {
           ...headers,
           Authorization: `Bearer ${user.access_token}`,
-          "X-Subject": user.profile.sub,
         },
         body,
         method,
@@ -35,8 +34,10 @@ const request = async <T>(
     return JSON.parse(text) as T;
   }
   try {
-    const errJson = JSON.parse(text) as RequestError;
-    return Promise.reject(errJson);
+    if (response.status === 401) {
+      window.location.href = "/401";
+    }
+    return Promise.reject(err(text));
   } catch {
     return Promise.reject(err(response.statusText));
   }

@@ -21,7 +21,7 @@ const PageLoading = () => {
 };
 function App() {
   return (
-    <div className="text-gray-700">
+    <div className="text-gray-700 h-full w-full">
       <AuthenticationProvider
         configuration={oidcConfiguration}
         notAuthenticated={NotAuthenticated}

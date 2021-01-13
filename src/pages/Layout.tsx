@@ -5,16 +5,14 @@ import { Logout, LogoutFailed } from "pages/Logout";
 import { Home } from "pages/Home";
 import { LogoutCallback } from "./LogoutCallback";
 import { LogoIcon } from "components/icon/Icons";
+import { NotAuthorized } from "./NotAuthorized";
 const RedirectHome = () => <Redirect to="/" />;
 export const PublicLayout = () => {
   return (
-    <div className="flex flex-col justify-center h-screen pattern">
-      <div
-        className="bg-gray-100 rounded-lg shadow"
-        style={{ height: "500px", width: "312px", margin: "auto" }}
-      >
+    <div className="flex flex-col justify-center h-full w-full pattern">
+      <div className="bg-gray-100 rounded-lg shadow h-full w-full">
         <div className="flex flex-col items-baseline w-full h-full px-4">
-          <div className="flex flex-row items-baseline justify-center py-2">
+          <div className="flex flex-row items-baseline justify-center py-2 w-full">
             <LogoIcon className="w-12 h-12 text-blue-500" />
             <div className="pl-8 text-4xl font-extrabold text-blue-500">
               MY-SHELL
@@ -33,6 +31,7 @@ export const PublicLayout = () => {
                   exact
                   component={LogoutCallback}
                 />
+                <Route path="/401" component={NotAuthorized} />
                 <Route path="/" exact component={Home} />
                 <Route component={RedirectHome} />
               </Switch>

@@ -120,30 +120,30 @@ export const Login = () => {
       });
   };
 
-  const loadUser = () => {
-    var query = queryString.parse(window.location.search);
-    const login_challenge: string | undefined = query.login_challenge as
-      | string
-      | undefined;
-    if (login_challenge == null || login_challenge === "") {
-      window.location.href = process.env.REACT_APP_URL as string;
-      return;
-    }
-    setChallenge(login_challenge);
-    idp
-      .getLogin(login_challenge)
-      .then((res) => {
-        setSkip(res.skip);
-        if (res.skip) {
-          setCred({ password: "", username: res.subject });
-          return;
-        }
-        setCred({ password: "", username: "" });
-      })
-      .catch(() => (window.location.href = "/"));
-  };
-
   useEffect(() => {
+    const loadUser = () => {
+      var query = queryString.parse(window.location.search);
+      const login_challenge: string | undefined = query.login_challenge as
+        | string
+        | undefined;
+      if (login_challenge == null || login_challenge === "") {
+        window.location.href = process.env.REACT_APP_URL as string;
+        return;
+      }
+      setChallenge(login_challenge);
+      idp
+        .getLogin(login_challenge)
+        .then((res) => {
+          setSkip(res.skip);
+          if (res.skip) {
+            setCred({ password: "", username: res.subject });
+            return;
+          }
+          setCred({ password: "", username: "" });
+        })
+        .catch(handleLogout);
+    };
+
     loadUser();
   }, []);
 
