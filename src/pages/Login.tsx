@@ -3,12 +3,12 @@ import { idp } from "resources";
 import { RequestError } from "resources/apis/api";
 import queryString from "query-string";
 import { Button, ControlGroup, Icon, InputGroup } from "@blueprintjs/core";
-import { Spinner } from "components/core";
+import { Spinner } from "components/utils";
 import {
   defaultErrorMessage,
   translateErrorMessages,
 } from "resources/translation/errors";
-import { ErrorMessage } from "components/core/ErrorMessage";
+import { ErrorMessage } from "components/utils/ErrorMessage";
 
 const SkipLoginView = ({
   username,

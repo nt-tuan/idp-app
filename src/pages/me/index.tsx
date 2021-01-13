@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from "components/core";
+import { Menu, MenuItem } from "components/utils";
 import { PageLayout } from "components/layout/PageLayout";
 import { Layout2 } from "components/layout/Layout2";
 import React from "react";

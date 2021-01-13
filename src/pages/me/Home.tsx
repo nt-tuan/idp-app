@@ -1,6 +1,6 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { AnchorButton } from "@blueprintjs/core";
-import { Spinner } from "components/core";
+import { Spinner } from "components/utils";
 import { EditingUserInfo } from "components/user/UserInfoEditor";
 import { UserViewer } from "components/user/UserViewer";
 import React from "react";

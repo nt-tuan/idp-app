@@ -3,8 +3,8 @@ import { IUser } from "resources/models/user";
 import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
 import Avatar from "react-avatar";
 import { RequestError } from "resources/apis/api";
-import { ErrorMessage } from "components/core/ErrorMessage";
-import { Stack } from "components/core/Stack";
+import { ErrorMessage } from "components/utils/ErrorMessage";
+import { Stack } from "components/utils/Stack";
 import cx from "classnames";
 export interface EditingUserInfo extends IUser {
   previewImage?: File;

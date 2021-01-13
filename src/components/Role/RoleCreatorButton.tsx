@@ -1,6 +1,6 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { Button, Drawer, Icon } from "@blueprintjs/core";
-import { toastError } from "components/core";
+import { toastError } from "components/utils";
 import React from "react";
 import { roleAPI } from "resources/apis/role";
 import { IRole } from "resources/models/role";

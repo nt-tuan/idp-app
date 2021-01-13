@@ -1,4 +1,4 @@
-import { toastError } from "components/core";
+import { toastError } from "components/utils";
 import { User } from "oidc-client";
 import React from "react";
 import { userAPI } from "resources/apis/user";

@@ -1,6 +1,6 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { Button } from "@blueprintjs/core";
-import { Stack } from "components/core/Stack";
+import { Stack } from "components/utils/Stack";
 import React from "react";
 import { useHistory } from "react-router-dom";
 

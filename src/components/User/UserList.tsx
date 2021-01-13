@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { isUserLocked, IUser } from "resources/models/user";
 import { userAPI } from "resources/apis/user";
 import { Button, Classes, HTMLTable, Icon } from "@blueprintjs/core";
-import { Header } from "components/core";
+import { Header } from "components/utils";
 import { Link, useHistory } from "react-router-dom";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { UserCreateRoute, UserViewRoute } from "routes/admin";

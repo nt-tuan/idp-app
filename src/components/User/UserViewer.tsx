@@ -1,6 +1,6 @@
 import { Tabs, Tab, Icon, Button } from "@blueprintjs/core";
-import { Spinner, Header } from "components/core";
-import { ErrorMessage } from "components/core/ErrorMessage";
+import { Spinner, Header } from "components/utils";
+import { ErrorMessage } from "components/utils/ErrorMessage";
 import { UserRolesEditor } from "components/user/UserRolesEditor";
 import React from "react";
 import Avatar from "react-avatar";
@@ -8,7 +8,7 @@ import { RequestError } from "resources/apis/api";
 import { IRole } from "resources/models/role";
 import { IUser, UserSignInLog } from "resources/models/user";
 import { EditingUserInfo, UserInfoEditor } from "./UserInfoEditor";
-import { Stack } from "components/core/Stack";
+import { Stack } from "components/utils/Stack";
 import UAParser from "ua-parser-js";
 import { Consent } from "resources/models/consent";
 import moment from "moment";

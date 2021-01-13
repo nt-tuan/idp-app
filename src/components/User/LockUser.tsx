@@ -1,5 +1,5 @@
 import { AnchorButton, Popover } from "@blueprintjs/core";
-import { Menu, MenuItem, toastError } from "components/core";
+import { Menu, MenuItem, toastError } from "components/utils";
 import { User } from "oidc-client";
 import moment from "moment";
 import React from "react";

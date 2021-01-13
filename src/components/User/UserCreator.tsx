@@ -8,7 +8,7 @@ import {
 import { CreatedUser, IUser } from "resources/models/user";
 import { UserRolesEditor } from "./UserRolesEditor";
 import { userAPI } from "resources/apis/user";
-import { toastError, Header } from "components/core";
+import { toastError, Header } from "components/utils";
 import { DatePicker } from "@blueprintjs/datetime";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { useHistory } from "react-router-dom";

@@ -1,5 +1,5 @@
 import { useReactOidc } from "@axa-fr/react-oidc-context";
-import { Breadscrumbs, newBreadscrumb } from "components/core";
+import { Breadscrumbs, newBreadscrumb } from "components/utils";
 import { UserSelect } from "components/user/UserSelect";
 import { Layout2 } from "components/layout/Layout2";
 import React from "react";
@@ -9,7 +9,7 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { User } from "oidc-client";
 import { IRole } from "resources/models/role";
 import { RequestError } from "resources/apis/api";
-import { ErrorMessage } from "components/core/ErrorMessage";
+import { ErrorMessage } from "components/utils/ErrorMessage";
 import { adminRoutes } from "routes";
 import { UsersRoute, UserViewRoute } from "routes/admin";
 interface UserLayoutContextProps {

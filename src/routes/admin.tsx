@@ -1,5 +1,5 @@
 import React from "react";
-import { newProtectedRoute } from "components/core/PrivateRoute";
+import { newProtectedRoute } from "components/utils/PrivateRoute";
 export const allUserRoles = {
   read: "user.read",
   write: "user.write",

@@ -1,4 +1,4 @@
-import { TopNavbar } from "components/core";
+import { TopNavbar } from "components/utils";
 import React from "react";
 
 interface Props {

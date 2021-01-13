@@ -17,7 +17,7 @@ import {
 } from "@blueprintjs/core";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { isAuthorized, PageRoute } from "./PrivateRoute";
-import { MenuItem, Menu } from "components/core";
+import { MenuItem, Menu } from "components/utils";
 import { meRoutes } from "routes";
 import { BreadcrumbProps, Breadcrumbs, newBreadcrumb } from "./Breadcrumbs";
 import Avatar from "react-avatar";

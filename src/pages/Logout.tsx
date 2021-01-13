@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router-dom";
 import { idp } from "resources";
-import { Spinner } from "components/core";
+import { Spinner } from "components/utils";
 export const Logout = () => {
   const location = useLocation();
   useEffect(() => {

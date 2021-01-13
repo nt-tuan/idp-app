@@ -1,4 +1,4 @@
-import { PageRoute } from "components/core/PrivateRoute";
+import { PageRoute } from "components/utils/PrivateRoute";
 import { UserViewRoute, UserCreateRoute } from "./admin";
 import { HomeRoute, ChangePasswordRoute } from "./me";
 

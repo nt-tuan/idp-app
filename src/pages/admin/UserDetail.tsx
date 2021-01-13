@@ -1,8 +1,8 @@
 import React from "react";
 import { useReactOidc } from "@axa-fr/react-oidc-context";
 import { AnchorButton, Icon, Popover } from "@blueprintjs/core";
-import { Spinner, toastError } from "components/core";
-import { toastSuccess } from "components/core/toaster";
+import { Spinner, toastError } from "components/utils";
+import { toastSuccess } from "components/utils/toaster";
 import { RoleCreatorButton } from "components/role/RoleCreatorButton";
 import { UserLayoutContext } from "pages/admin/UserAdmin";
 import { RequestError } from "resources/apis/api";
