@@ -48,7 +48,7 @@ export const upload = async (name: string, data: File, token: string) => {
   formData.append("file", data);
   formData.append("name", name);
   const image = await request<ImageInfo>(
-    "POST",
+    "PUT",
     `/admin/image`,
     formData,
     token,
