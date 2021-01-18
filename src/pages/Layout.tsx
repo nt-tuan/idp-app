@@ -10,7 +10,7 @@ const RedirectHome = () => <Redirect to="/" />;
 export const PublicLayout = () => {
   return (
     <div className="flex flex-col justify-center h-full w-full pattern">
-      <div className="bg-gray-100 rounded-lg shadow h-full w-full">
+      <div className="bg-gray-100 rounded-lg shadow h-full w-full md:w-96 md:h-128 md:mx-auto overflow-hidden text-center">
         <div className="flex flex-col items-baseline w-full h-full px-4">
           <div className="flex flex-row items-baseline justify-center py-2 w-full">
             <LogoIcon className="w-12 h-12 text-blue-500" />

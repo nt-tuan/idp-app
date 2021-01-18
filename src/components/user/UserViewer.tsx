@@ -240,6 +240,8 @@ export const UserViewDesktop = (props: Props) => {
           <div className="flex-1">
             {props.onChange && props.editingUser ? (
               <UserInfoEditor
+                onSave={props.onSave}
+                onCancel={props.onCancel}
                 user={props.editingUser}
                 onChange={props.onChange}
               />
